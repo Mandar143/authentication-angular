@@ -1,0 +1,71 @@
+.chart-title {
+    border-bottom: 1px solid #87c54c;
+    font-size: 14px;
+    font-weight: 500;
+    padding-bottom: 12px;
+}
+
+.graph-grid-row .mat-card {
+    box-shadow: 0 0 10px #999;
+}
+
+.pieChart {
+    height: 100%;
+    width: 100%;
+}
+:host /deep/ .advanced-pie-legend{
+    float: none;
+    transform: inherit;
+   // position: absolute;
+    left: 0;
+    text-align: center;
+    width: 100% !important;
+    margin-top: -28px;
+}
+:host /deep/ .advanced-pie-legend .total-value{
+    font-size: 20px;
+}
+:host /deep/ .advanced-pie-legend .total-label{
+    font-size: 17px;
+}
+:host /deep/ .advanced-pie-legend .legend-items-container .legend-items .legend-item .item-value{
+    font-size: 24px;
+}
+:host /deep/ .advanced-pie-legend .legend-items-container .legend-items .legend-item .item-percent{
+    font-size: 16px;  
+}
+:host /deep/ .advanced-pie-legend .legend-items-container .legend-items .legend-item{
+    margin-right:5px;
+}
+:host /deep/ .advanced-pie-legend-wrapper{
+    display: block;
+    width:100% !important;
+    height:auto !important
+}
+:host /deep/ .advanced-pie{
+    float: none;
+    display: block;
+    margin:0 auto;
+    width: 200px !important;
+}
+:host /deep/ .pieChart .ngx-charts{
+    float: none;
+}
+:host /deep/ .pie.chart{
+    transform: translate(96px, 67px) !important;
+}
+:host /deep/ .advanced-pie.chart .ngx-charts{
+    width:200px !important
+}
+:host /deep/ .pieChart ngx-charts-advanced-pie-chart > div{
+    max-width:100% !important;
+    margin: 0 auto;
+    height: 100% !important;
+}
+:host /deep/  .advanced-pie.chart .ngx-charts-outer{
+    width:200px !important
+}
+:host /deep/ .pieChart ngx-charts-chart{
+    display: block;
+}
+

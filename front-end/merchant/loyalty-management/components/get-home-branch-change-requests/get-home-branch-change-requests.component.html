@@ -1,0 +1,161 @@
+<mat-card class="mat-card">
+  <h3 class="card-title">
+    {{ !isUserSearch ? 'Home Branch': '' }} Change Logs
+    <button *ngIf="!isUserSearch" mat-raised-button class="mat-btn-theme float-right" (click)="togglePanelSearch()">Search By</button>
+  </h3>
+
+  <!-- filter -->
+  <div *ngIf="panelStateSearch">
+    <mat-card class="mat-card mt-1 mb-5">
+      <span class="close-icon" (click)="togglePanelSearch()"></span>
+      <app-filter-logs [formControls]="formControls" (submited)="onSubmit($event)"></app-filter-logs>
+    </mat-card>
+  </div>
+
+
+  <div class="mat-table__wrapper list-table">
+
+    <mat-table [dataSource]="userResult" matSort matSortActive="created_at" matSortDirection="desc" matSortDisableClear
+      class="lmat-elevation-z8 mat-table-section dashboard-table desktop-view-table">
+
+      <ng-container matColumnDef="customer_name">
+        <mat-header-cell class="header cell-1" *matHeaderCellDef mat-sort-header> Customer Name </mat-header-cell>
+        <mat-cell class="cell cell-2" *matCellDef="let element">
+          {{(element.customer_name | capsLetters) || '-'}}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="existing_home_branch_id">
+        <mat-header-cell class="header cell-1" *matHeaderCellDef mat-sort-header> Existing Home Branch
+        </mat-header-cell>
+        <mat-cell class="cell cell-2" *matCellDef="let element"> {{element.old_home_branch}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="new_home_branch_id">
+        <mat-header-cell class="header cell-1" *matHeaderCellDef mat-sort-header> New Home Branch</mat-header-cell>
+        <mat-cell class="cell cell-2" *matCellDef="let element"> {{element.new_home_branch}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="requested_by_name">
+        <mat-header-cell class="header cell-1" *matHeaderCellDef mat-sort-header> Requested By Name </mat-header-cell>
+        <mat-cell class="cell cell-2" *matCellDef="let element">
+          <span matTooltip="{{ element.requested_by_name || '-' }}">{{element.requested_by_name || '-'}}</span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="updated_by_name">
+        <mat-header-cell class="header cell-1" *matHeaderCellDef mat-sort-header> Updated By Name </mat-header-cell>
+        <mat-cell class="cell cell-2" *matCellDef="let element">
+          <span matTooltip="{{element.updated_by_name || '-'}}">{{element.updated_by_name || '-'}}</span></mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="created_at">
+        <mat-header-cell class="header cell-1" *matHeaderCellDef mat-sort-header> Created At </mat-header-cell>
+        <mat-cell class="cell cell-2" *matCellDef="let element">
+            {{(element.created_at | date: dateFormate)}}
+          <!-- {{(element.created_at | date: 'mediumDate') || "-"}} -->
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="updated_at">
+        <mat-header-cell class="header cell-1" *matHeaderCellDef mat-sort-header> Updated At </mat-header-cell>
+        <mat-cell class="cell cell-2" *matCellDef="let element">
+          {{(element.updated_at | date: dateFormate)}}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="status">
+        <mat-header-cell class="header cell-1" *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+        <mat-cell class="cell cell-2" *matCellDef="let element"> <span
+            class="m-badge m-badge--{{ element.status }}  m-badge--wide">{{(element.status) == 1 ? 'Pending' : (element.status) ==
+            2 ? 'Approved' : 'Cancelled'}} </span></mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell class="header cell-1" *matHeaderCellDef> Action </mat-header-cell>
+        <mat-cell class="cell cell-2" *matCellDef="let element">
+          <button mat-icon-button matTooltip="Approve Request" class="delete-button" *ngIf="element.status==1"
+            (click)="approveRequest(element)">
+            <mat-icon>done</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Cancel Request" class="delete-button" *ngIf="element.status==1"
+            (click)="cancelRequest(element)">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <div class="mat-table__message text-center mt-3 mb-3" *ngIf="!dataSource.hasItems">No records found</div>
+    <!-- Message for empty data  -->
+    <!-- </div> -->
+    <!-- start: BOTTOM -->
+    <div class="mat-table__bottom">
+      <mat-spinner [diameter]="30" *ngIf="dataSource.loading$ | async" class="loader"></mat-spinner>
+      <mat-paginator [pageSize]="10" [pageIndex]="0" [length]="dataSource.paginatorTotal$ | async"
+        [showFirstLastButtons]="true"></mat-paginator>
+    </div>
+  </div>
+
+</mat-card>
+<!-- Mobile -View -->
+<div class="mat-table__wrapper mobile-view-list-section mt-3">
+
+  <mat-card class="mobile-view-card" *ngFor="let row of userResult">
+    <!-- <div class="grid-list-mobile">
+      <label class="card-label">Profile</label>
+      <div class="label-discription"><img class="profile_mob" src="" onerror="this.src='assets/images/avatar.png'">
+      </div>
+    </div> -->
+    <div class="grid-list-mobile">
+      <label class="card-label">Existing Home Branch ID:</label>
+      <div class="label-discription">{{row.old_home_branch}}</div>
+    </div>
+    <div class="grid-list-mobile">
+      <label class="card-label">New Home Branch ID:</label>
+      <div class="label-discription">{{row.new_home_branch}}</div>
+    </div>
+    <div class="grid-list-mobile">
+      <label class="card-label">Status:</label>
+      <div class="label-discription"> {{(row.status) == 1 ? 'Pending' : (row.status) == 2 ? 'Approved' : 'Cancelled'}}
+      </div>
+    </div>
+    <div class="grid-list-mobile">
+      <label class="card-label">Created At:</label>
+      <div class="label-discription">{{row.created_at | date: dateFormate}}</div>
+    </div>
+    <div class="grid-list-mobile">
+      <label class="card-label">Updated At:</label>
+      <div class="label-discription">{{row.updated_at | date: dateFormate}}</div>
+    </div>
+    <div class="grid-list-mobile">
+      <label class="card-label">Customer Name:</label>
+      <div class="label-discription">
+        {{row.customer_name}}
+      </div>
+    </div>
+    <div class="grid-list-mobile">
+      <label class="card-label">Requested By Name:</label>
+      <div class="label-discription">
+        {{row.requested_by_name}}
+      </div>
+    </div>
+    <div class="grid-list-mobile">
+      <label class="card-label">Updated By Name:</label>
+      <div class="label-discription">
+        {{row.updated_by_name}}
+      </div>
+    </div>
+
+    <div class="grid-list-mobile">
+      <label class="card-label action-label-mobile">Action:</label>
+      <div class="label-discription">
+        <button mat-icon-button matTooltip="Delete" class="delete-button" *ngIf="row.status==1"
+          (click)="cancelRequest(row)">
+          <mat-icon>clear</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-card>
+</div>

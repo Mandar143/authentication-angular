@@ -1,0 +1,36 @@
+.mat-radio-button~.mat-radio-button {
+    margin-left: 16px;
+}
+
+.search-label {
+    font-size: 14px;
+    vertical-align: text-bottom;
+    margin-right: 15px;
+}
+
+:host {
+    button /deep/ .mat-button-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    button.active {
+        cursor: not-allowed
+    }
+
+    .spinner {
+        margin-top: 0px;
+        margin-left: 5px;
+    }
+
+    .fullWidth {
+        width: 100%;
+    }
+}
+.mat-form-field {
+   height: 58px;
+}
+.search-customer-row{
+    align-items: center;
+}

@@ -1,0 +1,31 @@
+.mat-header-cell:last-of-type{
+    padding-right:8px;
+}
+.close-icon{
+    position: absolute;
+    float: right;
+    right:-11px;
+    top:-6px;
+    background:url(../../../../../assets/images/close-icon.png) 0 0 no-repeat;
+    height:20px;
+    width:20px;
+    z-index: 1000;
+    cursor: pointer;
+    background-size: 75%;
+}
+
+.summary-label {
+    font-weight: 500;
+}
+.summary-row {
+    border: 1px solid #ccc;
+    padding: 10px 10px 0;
+    box-shadow: 4px 5px 5px #ccc;
+    margin: 0px;
+}
+
+@media (max-width: 1024px) {
+    .dashboard-table {
+      display: block;
+    }
+  }

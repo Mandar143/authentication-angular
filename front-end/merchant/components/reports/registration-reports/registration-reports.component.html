@@ -1,0 +1,91 @@
+<mat-card class="mat-card mt-2">
+  <h3 class="card-title">
+    Registered Customers
+    <!-- <button mat-raised-button class="mat-btn-theme pull-right" (click)="emailReport(1)">Email Report(excel)</button>
+    &nbsp; -->
+    <div class="pull-right">
+      <button mat-raised-button class="mat-btn-theme" (click)="emailReport(2)" [disabled]="disableStatus">Email
+        Report(CSV)</button>
+      &nbsp;
+      <button mat-raised-button class="mat-btn-theme" (click)="togglePanelSearch()">Search By</button>
+    </div>
+
+  </h3>
+  <div *ngIf="panelStateSearch">
+    <mat-card class="mat-card mt-1 mb-5">
+      <span class="close-icon" (click)="togglePanelSearch()"></span>
+      <app-filter-logs [formControls]="formControls" (submited)="onSubmit($event)"></app-filter-logs>
+    </mat-card>
+  </div>
+
+  <div class="row summary-row">
+    <div class="col-lg-6 col-md-6 col-xl-6 col-12 ">
+      <label><span class="summary-label">Total Count: </span> <span matTooltip="{{totalCount}}"> {{totalCount | abbrevateNumber}} </span></label>
+    </div>
+    <div class="col-lg-6 col-md-6 col-xl-6 col-12 ">
+      <label><span class="summary-label">Total Purchase: </span> <span matTooltip="{{totalPurchase}}"> <i class="fa fa-rupee"></i> {{totalPurchase | abbrevateNumber}} </span></label>
+    </div>
+    <div class="col-lg-6 col-md-6 col-xl-6 col-12 ">
+      <label><span class="summary-label">Average Purchase: </span> <span matTooltip="{{avgPurchase}}"> <i class="fa fa-rupee"></i> {{avgPurchase | abbrevateNumber}} </span></label>
+    </div>
+    <div class="col-lg-6 col-md-6 col-xl-6 col-12 ">
+      <label><span class="summary-label">Max. Purchase: </span> <span matTooltip="{{maxPurchase}}"> <i class="fa fa-rupee"></i> {{maxPurchase | abbrevateNumber}} </span></label>
+    </div>
+  </div>
+
+  <ng-container>
+    <mat-card-content class="example-card">
+
+      <mat-table [dataSource]="dataSource" matSort matSortActive="created_at" matSortDirection="desc"
+        matSortDisableClear class="lmat-elevation-z8 mat-table-section dashboard-table desktop-view-table mt-3">
+
+        <ng-container matColumnDef="customer_name">
+          <mat-header-cell class="header cell-1" *matHeaderCellDef mat-sort-header> Customer Name </mat-header-cell>
+          <mat-cell class="cell cell-2" *matCellDef="let element"> {{(element.customer_name | capsLetters) || '-'}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="mobile_number">
+          <mat-header-cell class="header cell-1" *matHeaderCellDef> Mobile Number </mat-header-cell>
+          <mat-cell class="cell cell-2" *matCellDef="let element"> {{element.mobile_number}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="current_purchase_value">
+          <mat-header-cell class="header cell-1" *matHeaderCellDef mat-sort-header> Current Purchase Value
+          </mat-header-cell>
+          <mat-cell class="cell cell-2" *matCellDef="let element"> <i class="fa fa-rupee mr-1"
+              *ngIf="element.current_purchase_value"></i> {{element.current_purchase_value || '-'}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="lifetime_purchases">
+          <mat-header-cell class="header cell-1" *matHeaderCellDef mat-sort-header> Lifetime Purchases
+          </mat-header-cell>
+          <mat-cell class="cell cell-2" *matCellDef="let element"> <i class="fa fa-rupee mr-1"
+              *ngIf="element.lifetime_purchases"></i> {{element.lifetime_purchases || '-'}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="location_name">
+          <mat-header-cell class="header cell-1" *matHeaderCellDef> Home Branch </mat-header-cell>
+          <mat-cell class="cell cell-2" *matCellDef="let element"> {{element.location_name || '-'}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="created_at">
+          <mat-header-cell class="header cell-1" *matHeaderCellDef mat-sort-header> Date of Joining </mat-header-cell>
+          <mat-cell class="cell cell-2" *matCellDef="let element"> {{element.created_at | date: dateFormate}}
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+
+      <div class="mat-table__message text-center mt-3 mb-3" *ngIf="!dataSource.hasItems">No records found</div>
+      <div class="mat-table__bottom">
+        <mat-spinner [diameter]="30" *ngIf="dataSource.loading$ | async" class="loader"></mat-spinner>
+        <mat-paginator [pageSize]="10" [pageIndex]="0" [length]="dataSource.paginatorTotal$ | async"
+          [showFirstLastButtons]="true"></mat-paginator>
+      </div>
+
+    </mat-card-content>
+  </ng-container>
+</mat-card>

@@ -1,0 +1,165 @@
+<!-- Search Customer Panle -->
+
+<!-- Manage-Customers List -->
+<mat-card class="mat-card mat-card-list">
+  <h3 class="card-title">
+    Manage Customers List
+    <button mat-raised-button class="mat-btn-theme pull-right" (click)="togglePanelSearch()">Search By</button>
+  </h3>
+
+  <mat-accordion class="example-headers-align">
+    <mat-expansion-panel class="panel-expansion" [expanded]="panelStateSearch">
+        <span class="close-icon" (click)="closeSearchPanel()"></span>
+      <!-- <h4 class="card-title">
+        <div class="col-md-12">
+          Search Filter
+          <span class="close-icon" (click)="closeSearchPanel()"></span>
+        </div>
+      </h4> -->
+      <form [formGroup]="searchCustomerForm">
+        <div class="example-container row">
+          <div class="col-md-4 col-sm-12 col-xl-4 col-lg-4 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Customer Name</mat-label>
+              <input matInput placeholder="Customer Name" #customer_name formControlName="customer_name" maxlength="20">
+              <mat-error *ngIf="searchCustomerForm.get('customer_name').hasError('pattern')">
+                Please enter a valid Customer name
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-4 col-sm-12 col-xl-4 col-lg-4 col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Mobile Number</mat-label>
+              <input matInput placeholder="Mobile Number" #mobile_number formControlName="mobile_number" maxlength="10">
+              <mat-error *ngIf="searchCustomerForm.get('mobile_number').hasError('pattern')">
+                Please enter a valid Mobile Number
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-4 col-sm-12 col-xl-4 col-lg-4 col-12">
+            <div class="text-center">
+              <button mat-raised-button class="mat-btn-theme submitBtn" style="margin-right: 10px;" (click)="filterCustomer(searchCustomerForm.value)" [disabled]="!searchCustomerForm.valid">Search</button>
+              <button mat-raised-button class="mat-btn-theme submitBtn" (click)="filterReset()">Clear</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <div class="mat-table__wrapper list-table">
+    <mat-table [dataSource]="userResult" matSort matSortActive="created_at" matSortDirection="desc" matSortDisableClear
+      class="lmat-elevation-z8 mat-table-section dashboard-table desktop-view-table">
+
+      <ng-container matColumnDef="customer_name">
+        <mat-header-cell class="header cell-1" *matHeaderCellDef mat-sort-header> Customer Name </mat-header-cell>
+        <mat-cell class="cell cell-2" *matCellDef="let element">
+          {{element.customer_name}}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="mobile_number">
+        <mat-header-cell class="header cell-1" *matHeaderCellDef> Mobile Number
+        </mat-header-cell>
+        <mat-cell class="cell cell-2" *matCellDef="let element"> {{element.mobile_number}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <mat-header-cell class="header cell-1" *matHeaderCellDef> Email </mat-header-cell>
+        <mat-cell class="cell cell-2" *matCellDef="let element" matTooltip="{{element.email_address}}">
+          {{element.email_address}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="gender">
+        <mat-header-cell class="header cell-1" *matHeaderCellDef> Gender </mat-header-cell>
+        <mat-cell class="cell cell-2" *matCellDef="let element"> {{(element.gender == 1)? 'Male' : 'Female'}}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="current_purchase_value">
+        <mat-header-cell class="header cell-1" *matHeaderCellDef> Current Purchase Value </mat-header-cell>
+        <mat-cell class="cell cell-2" *matCellDef="let element"> {{element.current_purchase_value ?
+          element.current_purchase_value : '-' }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="created_at">
+        <mat-header-cell class="header cell-1" *matHeaderCellDef mat-sort-header> Registration Date </mat-header-cell>
+        <mat-cell class="cell cell-2" *matCellDef="let element"> {{element.created_at | date: dateFormate}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell class="header cell-1" *matHeaderCellDef> Action </mat-header-cell>
+        <mat-cell class="cell cell-2" *matCellDef="let element">
+          <button mat-icon-button matTooltip="view" (click)="viewUser(element)" class="edit-button" style="flex-shrink:unset;">
+            <mat-icon color="primary">remove_red_eye</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Edit" (click)="editUser(element)" class="edit-button" style="flex-shrink:unset;">
+            <mat-icon color="primary">edit</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <div class="mat-table__message text-center mt-3 mb-3" *ngIf="!dataSource.hasItems">No records found</div>
+    <!-- Message for empty data  -->
+    <!-- </div> -->
+    <!-- start: BOTTOM -->
+    <div class="mat-table__bottom">
+      <mat-spinner [diameter]="30" *ngIf="dataSource.loading$ | async" class="loader"></mat-spinner>
+      <mat-paginator [pageSize]="10" [pageIndex]="0" [length]="dataSource.paginatorTotal$ | async"
+        [showFirstLastButtons]="true"></mat-paginator>
+    </div>
+  </div>
+</mat-card>
+<div class="mat-table__wrapper mobile-view-list-section mt-3">
+
+  <mat-card class="mobile-view-card" *ngFor="let row of userResult">
+    <!-- <div class="grid-list-mobile">
+        <label class="card-label">Profile</label>
+        <div class="label-discription"><img class="profile_mob" src="" onerror="this.src='assets/images/avatar.png'">
+        </div>
+      </div> -->
+    <div class="grid-list-mobile">
+      <label class="card-label">Customer Name:</label>
+      <div class="label-discription">{{row.customer_name}}</div>
+    </div>
+    <div class="grid-list-mobile">
+      <label class="card-label">Mobile Number:</label>
+      <div class="label-discription">{{row.mobile_number}}</div>
+    </div>
+    <div class="grid-list-mobile">
+      <label class="card-label">Email:</label>
+      <div class="label-discription"> {{row.email_address}}
+      </div>
+    </div>
+    <div class="grid-list-mobile">
+      <label class="card-label">Gender:</label>
+      <div class="label-discription">{{(row.gender == 1)? 'Male' : 'Female'}}</div>
+    </div>
+    <div class="grid-list-mobile">
+      <label class="card-label">Current Purchase Value:</label>
+      <div class="label-discription">{{row.current_purchase_value ? row.current_purchase_value : '-'}}</div>
+    </div>
+    <div class="grid-list-mobile">
+      <label class="card-label">Registration Date:</label>
+      <div class="label-discription">
+        {{row.created_at | date: dateFormate}}
+      </div>
+    </div>
+
+    <div class="grid-list-mobile">
+      <label class="card-label action-label-mobile">Action:</label>
+      <div class="label-discription">
+        <button mat-icon-button matTooltip="view" (click)="viewUser(element)" class="edit-button" style="flex-shrink:unset;">
+          <mat-icon color="primary">remove_red_eye</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Edit" (click)="editUser(element)" class="edit-button" style="flex-shrink:unset;">
+          <mat-icon color="primary">edit</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-card>
+</div>

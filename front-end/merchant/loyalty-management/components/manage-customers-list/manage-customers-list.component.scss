@@ -1,0 +1,57 @@
+table {
+    width: 100%;
+}
+.mat-table .mat-cell{
+    padding-left: 5px;
+}
+.mat-icon-right{
+    position: absolute;
+    right: 0;
+    top: 0px;
+}
+.cell{
+    word-break: break-all;
+    font-size: 12px;
+}
+
+.mat-header-cell {
+    color: black;
+}
+.mat-table .m-badge {
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+}
+.cell-1, .cell-2{
+    padding-right:8px;
+}
+.close-icon{
+    // position: absolute;
+    float: right;
+    right: -15px;
+    // top: -23px;
+    background:url(../../../../../assets/images/close-icon.png) 0 0 no-repeat;
+    height:20px;
+    width:20px;
+    z-index: 1000;
+    cursor: pointer;
+    background-size: 75%;
+  }
+
+:host /deep/.mat-accordion>.mat-expansion-panel-spacing:last-child, .mat-accordion>:last-child:not(.mat-expansion-panel) .mat-expansion-panel-spacing{
+    // margin-bottom:16px;
+    overflow: visible;
+}
+.text-center{
+    padding: 9px;
+}
+
+.mat-accordion>.mat-expansion-panel-spacing:last-child, .mat-accordion>:last-child:not(.mat-expansion-panel) .mat-expansion-panel-spacing {
+    margin-bottom: 25px !important;    
+}
+
+@media (max-width: 1024px) {
+    .text-center{
+        width: 195px;
+    }
+}

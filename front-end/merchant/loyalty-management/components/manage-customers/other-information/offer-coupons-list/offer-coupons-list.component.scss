@@ -1,0 +1,140 @@
+.mat-cell:last-of-type {
+    border-left: 2px dashed #e1e1e1;
+    position: relative;
+}
+
+.mat-row:first-child .mat-cell:last-of-type {}
+
+.half-circle {
+    width: 24px;
+    height: 13px;
+    display: inline-block;
+    position: absolute;
+    left: -13px;
+}
+
+.half-circle1 {
+    background: url('../../../../../../../assets/images/half-circle1.png') 0 0 no-repeat;
+    top: 0;
+}
+
+.half-circle2 {
+    background: url('../../../../../../../assets/images/half-circle2.png') 0 0 no-repeat;
+    bottom: -1px;
+}
+.ruppee-big{
+    font-size: 33px;
+}
+
+mat-cell.mat-cell {
+    overflow: visible;
+    padding: 0px 15px 0px 15px;
+}
+
+.mat-footer-row,
+.mat-row,
+.mat-header-row {
+    background: none;
+    margin-bottom: 15px;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, .2), 0 1px 1px 0 rgba(0, 0, 0, .14), 0 1px 3px 0 rgba(0, 0, 0, .12);
+}
+
+.mat-row mat-cell.mat-cell:nth-child(1) {
+    flex: 0 0 58.33333333%;
+    max-width: 58.33333333%;
+    flex-wrap: wrap;
+}
+
+.mat-row mat-cell.mat-cell:nth-child(2) {
+    flex: 0 0 190px;
+    max-width: 190px;
+    justify-content: flex-end;
+}
+
+.mat-row mat-cell.mat-cell:nth-child(3) {
+    flex: 0 0 190px;
+    max-width: 190px;
+    min-height: 130px;
+}
+
+.c-text1 {
+    color: #87c54c;
+    font-size: 14px;
+    width:100%;
+}
+
+.c-text2 {
+    color: #282a3a;
+    font-size: 24px;
+    margin-top: 0px;
+    width:100%;
+}
+
+.c-text3 {
+    color: #a1a1a1;
+    font-size: 12px;
+    margin-top: 0px;
+    width:100%;
+}
+
+.purchase-amount {
+    font-size: 36px;
+    color: #87c54c;
+    display: inline-block;
+    line-height: normal;
+    margin-top: 0px;
+    font-weight: 500;
+}
+
+.ruppee-icon {
+    background: url(../../../../../../../assets/images/ruppe-icon1.png) center center no-repeat;
+    width: 17px;
+    height: 28px;
+    display: inline-block;
+    margin-right: 5px;
+    position: relative;
+    top: 2px;
+}
+
+.ruppee-icon.reward-type{
+    background: url(../../../../../../../assets/images/percent-icon.png) center center no-repeat;
+    width: 24px;
+    top:0;
+}
+
+.voucher-redeemed2 {
+    font-size: 18px;
+    display: block;
+}
+
+.coupon-redeemed {
+    display: inline-block;
+    background: #282a3a;
+    height: 47px;
+    float: right;
+    color: #fff;
+    text-align: center;
+    box-sizing: border-box;
+    border-radius: 4px;
+    width: 116px;
+    line-height: 47px;
+    margin-top: 0px;
+    cursor: pointer;
+}
+
+.coupon-redeemed-text {
+    color: #aaaaaa;
+    font-size: 12px;
+    text-align: right;
+    padding-right: 5px;
+    position: relative;
+    top: 5px;
+    clear: both;
+    overflow: hidden;
+}
+
+.coupon-redeemed.get-code {
+    background: #87c54c
+}

@@ -1,0 +1,219 @@
+@import '../../../shared/theme/conf';
+.mat-radio-button~.mat-radio-button {
+    margin-left: 16px;
+}
+
+.search-width {
+    margin-left: 10px;
+    width: 45%;
+}
+
+.search-customer-container {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.search-label {
+    font-size: 14px;
+    vertical-align: text-bottom;
+    margin-right: 15px;
+    font-weight: 500;
+}
+
+.file-upload-tab {
+    position: relative;
+    overflow: hidden;
+    background: #0062a8;
+    color: #fff;
+    width: 163px;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    border-radius: 50px;
+    display: inline-block;
+    font-size: 14px;
+}
+
+.file-count {
+    background: #005999;
+    border-radius: 50px;
+    height: 36px;
+    width: 36px;
+    float: right;
+}
+
+.file-input {
+    position: absolute;
+    font-size: 50px;
+    opacity: 0;
+    right: 0;
+    top: 0;
+}
+
+.upload-cloud {
+    margin-right: 4px;
+    position: relative;
+    top: 6px;
+}
+
+.my-drop-zone {
+    border: dotted 3px lightgray;
+}
+
+.nv-file-over {
+    border: dotted 3px red;
+}
+
+/* Default class applied to drop zones on over */
+
+.another-file-over-class {
+    border: dotted 3px green;
+}
+
+.upload-queue th,
+.upload-queue td {
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.table thead th {
+    border-width: 1px;
+}
+
+.upload-tabs {
+    color: #fff !important;
+}
+
+.material-icons.upload-success {
+    color: #6ab52e;
+}
+
+.material-icons.upload-cancel {
+    color: #8c8888;
+}
+
+.material-icons.upload-error {
+    color: #d71920;
+}
+
+.file-upload-icon {
+    height: 32px;
+    width: 32px;
+    margin-right: 8px;
+}
+
+.cancel-icon {
+    background: url(../../../../assets/images/cancel.png);
+}
+
+.remove-icon {
+    background: url(../../../../assets/images/remove.png);
+}
+
+.upload-icon {
+    background: url(../../../../assets/images/upload.png);
+}
+
+.remove-all-tab {
+    background: #d71920;
+}
+
+.upload-all-tab {
+    background: #6ab52e;
+}
+
+.cancel-tab {
+    background: #8c8888;
+}
+
+.file-upload-tab {
+    position: relative;
+    overflow: hidden;
+    background: #0062a8;
+    color: #fff;
+    width: 200px;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    border-radius: 50px;
+}
+
+.file-count {
+    background: #005999;
+    border-radius: 50px;
+    height: 36px;
+    width: 36px;
+    float: right;
+}
+
+.uploaded-file-name {
+    display: inline-block;
+    max-width: 365px;
+    padding-left: 5px;
+    font-weight: normal !important;
+}
+
+label.required::after {
+    content: "*";
+    color: red;
+}
+
+/* 
+.mat-form-label {
+  vertical-align: top;
+  color: rgba(0,0,0,.6);
+  font-weight: 500;
+  font-size: 13px;
+  margin-right: 15px;
+} */
+
+.grid-inner-radio {
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    padding: 14px 10px 4px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.radio-required {
+    color: rgba(177, 16, 16, 0.6);
+    font-size: 13px;
+    margin-left: 7px;
+    position: relative;
+    top: -5px;
+}
+
+.file-icon.xls-icon {
+    background: url(../../../../assets/images/xls.png) 0 0 no-repeat;
+    height: 24px;
+    width: 24px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.table>tbody>tr>td {
+    text-align: inherit;
+}
+.master-data-links{
+    display: inline-block;
+    vertical-align: top;
+    padding-top: 1px;
+}
+.master-data-links a{
+    margin:0 10px;
+    color:$info;
+    position: relative;
+}
+.master-data-links a:after{
+    position: absolute;
+    right: -13px;
+    height: 20px;
+    width: 1px;
+    background: #ccc;
+    content: '';
+}
+.master-data-links a:last-child:after{
+    content: none;
+}
+.master-data-grid{
+    padding-bottom: 10px;
+}

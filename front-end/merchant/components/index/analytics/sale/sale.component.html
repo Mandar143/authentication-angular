@@ -1,0 +1,75 @@
+<div class="row graph-grid-row">
+  <div class="col-lg-12 col-md-12 col-xl-12 col-12 graph-grid">
+    <mat-card class="mat-card">
+      <h3 class="chart-title">Store Sales</h3>
+      <div [@.disabled]="true">
+        <!-- dynamicHeightz -->
+        <mat-tab-group (focusChange)="focusChange($event)">
+          <mat-tab label="Average Transaction (INR)">
+            <ngx-charts-bar-vertical *ngIf="average_trans.length" [animations]="false" [scheme]="colorScheme" [view]="chart_size"
+              [results]="average_trans" [legend]="false" [xAxis]="true" [yAxis]="true" [showXAxisLabel]="false"
+              [showDataLabel]="false" [showYAxisLabel]="false" [barPadding]="20"
+              [yAxisLabel]="'Average Transaction (INR)'">
+            </ngx-charts-bar-vertical>
+            <div class="text-center mt-3 mb-3" *ngIf="!average_trans.length">
+                <b>
+                  No records found
+                </b>
+              </div>
+          </mat-tab>
+          <mat-tab label="Highest Sales (INR)">
+            <ngx-charts-bar-vertical *ngIf="highOrder_details.length" [scheme]="colorScheme" [view]="chart_size" [results]="highOrder_details"
+              [legend]="false" [xAxis]="true" [yAxis]="true" [showXAxisLabel]="false" [showDataLabel]="false"
+              [showYAxisLabel]="false" [barPadding]="20" [yAxisLabel]="'Highest Sales (INR)'">
+            </ngx-charts-bar-vertical>
+            <div class="text-center mt-3 mb-3" *ngIf="!highOrder_details.length">
+                <b>
+                  No records found
+                </b>
+              </div>
+          </mat-tab>
+          <mat-tab label="Average Transaction Per Customer">
+            <mat-button-toggle-group #sale_average_transaction_per_customer="matButtonToggleGroup"
+              (change)="subFilter($event)" value="count">
+              <mat-button-toggle value="count"> Count </mat-button-toggle>
+              <mat-button-toggle value="value"> Value </mat-button-toggle>
+            </mat-button-toggle-group>
+            <ngx-charts-bar-vertical *ngIf="average_transaction_per_customer.length" [scheme]="colorScheme"
+              [view]="chart_size" [results]="average_transaction_per_customer" [legend]="false" [xAxis]="true"
+              [yAxis]="true" [showXAxisLabel]="true" [showYAxisLabel]="true" [barPadding]="20"
+              [yAxisLabel]="(subFilterValue === 'count')? 'Average Transaction Per Customer' :'Average Transaction Per Customer(INR)'">
+            </ngx-charts-bar-vertical>
+            <div class="text-center mt-3 mb-3" *ngIf="!average_transaction_per_customer.length">
+              <b>
+                No records found
+              </b>
+            </div>
+          </mat-tab>
+          <!-- <mat-tab label="Weekday-Weekend Ratio (%)">
+              Content 4
+             </mat-tab> -->
+          <mat-tab label="Weekday-Weekend">
+            <!--  <ng-template matTabContent> -->
+            <mat-button-toggle-group #sale_weekend_weekdays_details="matButtonToggleGroup" (change)="subFilter($event)"
+              value="count">
+              <mat-button-toggle value="count"> Count </mat-button-toggle>
+              <mat-button-toggle value="value"> Value </mat-button-toggle>
+            </mat-button-toggle-group>
+            <!-- <ngx-charts-bar-vertical-2d [scheme]="colorScheme" [view]="chart_size" [results]="weekend_weekdays_details"
+              [xAxis]="true" [yAxis]="true" [showXAxisLabel]="true" [showYAxisLabel]="true" [xAxisLabel]="xAxisLabel"
+              [yAxisLabel]="(subFilterValue === 'count') ? 'Weekday-Weekend Count' : 'Weekday-Weekend Values'"
+              [legendTitle]="legendTitle">
+            </ngx-charts-bar-vertical-2d> -->
+            <ngx-charts-bar-vertical-stacked *ngIf="weekend_weekdays_details.length" [barPadding]="25" [legend]="true"
+              [legendPosition]="'below'" [view]="chart_size" [results]="weekend_weekdays_details"
+              [yAxisLabel]="(subFilterValue === 'count') ? 'Weekday-Weekend Count' : 'Weekday-Weekend (INR)'"
+              [xAxis]="true" [yAxis]="true" [showXAxisLabel]="true" [showYAxisLabel]="true" [animations]="true">
+            </ngx-charts-bar-vertical-stacked>
+            <div class="text-center mt-3 mb-3" *ngIf="!weekend_weekdays_details.length"> <b>No records found </b> </div>
+            <!-- </ng-template> -->
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,462 @@
+.cards {
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+.anchor {
+    text-decoration: none;
+    color: black;
+
+}
+
+.grid-count {
+
+    font-size: 48px;
+    padding-bottom: 12px;
+    padding-left: 10px;
+    font-weight: 400;
+    margin-bottom: 7px;
+    line-height: 45px;
+    color: #fff;
+    border-bottom: 2px solid #fff;
+}
+
+.merchant-name {
+    color: #fff;
+    font-size: 14px;
+    text-transform: uppercase;
+    padding-left: 10px;
+}
+
+.chart-title {
+    border-bottom: 1px solid #87c54c;
+    font-size: 14px;
+    font-weight: 500;
+    padding-bottom: 12px;
+}
+
+.merchant-grid1 mat-card {
+    background: #a7d7fa
+}
+
+.merchant-grid2 mat-card {
+    background: #febe24
+}
+
+.merchant-grid3 mat-card {
+    background: #ec8889
+}
+
+.merchant-grid4 mat-card {
+    background: #6be0ee
+}
+
+.graph-grid-row {
+    margin-bottom: 30px;
+    margin-top: 20px;
+
+}
+
+.graph-grid-row .mat-card {
+    box-shadow: 0 0 10px #999;
+}
+
+.chart-wrapper {
+    padding-top: 35px !important;
+    display: flex !important;
+    overflow: hidden !important;
+}
+
+.select-range {
+    width: 100%;
+    height: 67px;
+}
+
+.pieChart {
+    height: 100%;
+    width: 100%;
+}
+
+:host /deep/ .mat-button-toggle-checked {
+    background-color: #87c54c;
+    color: #fff;
+}
+
+:host /deep/ .mat-tab-body-content {
+    padding-top: 38px;
+}
+
+:host /deep/ .mat-button-toggle-group {
+    margin-top: -20px !important;
+}
+
+
+.statistics-header {
+    border-bottom: 2px solid #f1f1f1;
+    align-items: center;
+}
+
+.statistics-title {
+    border: none;
+    margin: 0;
+}
+
+@media (min-width: 300px) and (max-width: 1024px) {
+    .cards {
+        margin-bottom: 20px;
+    }
+}
+
+@import '../../../shared/theme/conf';
+
+.steps {
+    width: 10px;
+    height: 10px;
+    border-radius: 15px;
+    display: inline-block;
+    background: $step-pending;
+    position: relative;
+    cursor: pointer;
+    z-index: 1;
+    top: 19px;
+}
+
+.steps.active {
+    background: $step-active;
+    width: 15px;
+    height: 15px;
+    border-radius: 20px;
+}
+
+.crossed-step {
+    background: $step-crossed;
+
+}
+
+.progress-bar {
+    position: absolute;
+    top: 77px;
+    left: 0;
+    z-index: 1;
+    height: 2px;
+    overflow: visible;
+    width: 100%;
+}
+
+:host /deep/ div.mat-progress-bar-fill::after {
+    background: $step-active;
+    animation: step-one 1.5s forwards;
+
+}
+
+:host /deep/ .ngx-gallery-icon .ngx-gallery-icon-content {
+    color: #000;
+}
+
+:host /deep/ div.ngx-gallery-image-size-cover.ngx-gallery-image-wrapper .ngx-gallery-image {
+    background-size: contain;
+}
+
+.milestone-marker {
+    height: 72px;
+    width: 42px;
+    display: inline-block;
+    position: relative;
+    left: -13px;
+    top: -14px;
+    background: url(../../../../assets/images/map_pin.png) 0 0 no-repeat;
+    background-size: 100%;
+    margin-left: -22px;
+    animation: step-two 1.5s forwards;
+}
+
+.marker-arrow {
+    position: absolute;
+    bottom: -79px;
+    left: 24px;
+    z-index: 1;
+    font-size: 50px;
+    color: $step-crossed;
+}
+
+.milestone-marker-wrapper {
+    position: relative;
+}
+
+
+
+
+@keyframes step-one {
+    0% {
+        border-color: red;
+        width: 0%
+    }
+
+    100% {
+        border-color: red;
+        width: 100%;
+    }
+}
+
+@keyframes step-two {
+    0% {
+        left: 0%
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+
+// .step-list{
+//     text-align: left;
+// }
+// .step-container .step-list:first-child{
+//     text-align: left;
+// }
+// .step-container .step-list:last-child{
+//     text-align: left;
+// }
+.step-container {
+    padding-left: 0px;
+    display: flex;
+    // text-align: center;
+    justify-content: space-between;
+    list-style: none;
+    margin-top: -58px !important;
+    height: 109px;
+}
+
+.step-wrapper {
+    overflow: hidden;
+    position: relative;
+    padding-top: 31px;
+}
+
+
+.step-container .step-list {
+    position: relative;
+}
+
+.step-container .step-list:last-child:before {
+    content: none;
+}
+
+.range-ammount,
+.range-count {
+    display: block;
+    position: absolute;
+    width: 100px;
+}
+
+.range-ammount {
+    top: 37px;
+}
+
+.step-container .step-list:last-child .range-ammount,
+.step-container .step-list:last-child .range-count {
+    right: 0;
+    text-align: right;
+}
+
+.fa-rupee:before,
+.fa-inr:before {
+    position: relative;
+    top: 1px;
+}
+
+.milestone-text {
+    font-weight: 500;
+    font-size: $xl-text;
+    margin: -35px 0 0;
+}
+
+.tab-group-wrapper {
+    margin: 30px 0;
+}
+
+.grid-inner {
+    border: 1px solid $grid-border;
+    box-shadow: 0 0 5px $grid-border;
+    padding: 15px;
+
+    .voucher-text {
+        color: $fonts-color-secondary;
+        font-size: $lg-text;
+    }
+
+    .voucher-offer {
+        color: $fonts-color-secondary;
+        font-size: $xxl-text;
+        margin-top: 20px;
+    }
+
+    .vouucher-details {
+        font-size: 16px;
+        color: #000;
+        margin-top: 5px;
+    }
+
+    .voucher-expiry {
+        font-size: $sm-text;
+        color: #5e85da;
+        margin-top: 5px;
+    }
+}
+
+.coupon-code {
+    color: $btn-text-color;
+    background: $btn-bg-primary;
+    padding: 10px;
+    display: inline-block;
+    border-radius: 5px;
+    position: absolute;
+    right: 30px;
+    top: 15px;
+}
+
+:host /deep/ .graph-grid-row .graph-grid {
+    margin-top: 15px;
+}
+
+@media(max-width: 1024px) {
+    .merchant-class .mat-form-field {
+        width: 100% !important;
+    }
+}
+
+@media(max-width:1024px) {
+
+    .milestone-text,
+    .grid-inner .voucher-text,
+    .grid-inner .vouucher-details {
+        font-size: $default-text;
+    }
+
+    .milestone-text {
+        margin-top: 15px;
+        margin-bottom: 25px;
+    }
+
+    .step-wrapper {
+        margin-top: 30px;
+        padding-top: 0;
+    }
+
+    .step-container {
+        flex-direction: column;
+        width: 230px;
+        margin: 0 auto !important;
+        height: 500px;
+        align-content: space-between;
+
+
+    }
+
+    .step-list {
+        width: 100%;
+        line-height: 0;
+        margin-bottom: -2px;
+    }
+
+    .grid-inner .voucher-expiry {
+        font-size: $xsm-text;
+    }
+
+    .grid-inner .voucher-offer {
+        font-size: $xl-text;
+    }
+
+    .grid-inner {
+        margin-bottom: 15px;
+    }
+
+    .progress-bar {
+        transform: rotate(90deg);
+        transform-origin: 0% 50%;
+        top: 0px;
+        margin-left: 152px;
+
+    }
+
+    .range-count,
+    .range-ammount {
+        display: inline-block;
+        left: 0;
+        margin: 0 15px;
+        position: relative;
+        top: 0;
+        width: 77px;
+    }
+
+    .step-container:before {
+        content: none;
+    }
+
+    .milestone-marker-wrapper {
+        display: none;
+    }
+
+    .steps {
+        top: 0;
+        left: 1px;
+    }
+
+    .range-ammount {
+        text-align: right;
+    }
+
+    .steps.active {
+        left: -2px;
+    }
+
+    .step-container .step-list .range-ammount,
+    .step-container .step-list:last-child .range-ammount {
+        text-align: left;
+    }
+
+    .step-container .step-list .range-count {
+        text-align: right;
+    }
+
+    .graph-grid-row .graph-grid {
+        margin-bottom: 15px;
+    }
+
+    .graph-grid-row {
+        margin-bottom: 15px;
+    }
+
+
+}
+
+:host /deep/.md-drppicker.ltr {
+    width: 675px;
+    left: auto !important;
+    right: 0 !important;
+}
+
+@media(max-width:375px) {
+    :host /deep/.md-drppicker.ltr {
+        width: 300px;
+        left: auto !important;
+        right: 0 !important;
+    }
+}
+
+@media(max-width:1024) {
+    :host /deep/.md-drppicker.ltr {
+        width: 300px;
+        left: auto !important;
+        right: 0 !important;
+    }
+}
+
+/* @media (min-width: 768px){
+    .col-lg-2.graph-grid-pie-chart {
+        margin-bottom: 20px;
+        flex: 1 0;
+        max-width: 100%;
+    }
+} */

@@ -1,0 +1,93 @@
+<ng-container>
+  <h3 class="card-title">Order Details<span class="close-icon" (click)="closeDialog()"></span></h3>
+  <mat-dialog-content class="example-card">
+
+
+    <mat-table  [dataSource]="dataSource" matSort matSortActive="sku" matSortDirection="asc"
+      matSortDisableClear class="lmat-elevation-z8 mat-table-section dashboard-table desktop-view-table">
+      <!-- <ng-container matColumnDef="avatar">
+      <mat-header-cell class="header cell-1" *matHeaderCellDef> Profile </mat-header-cell>
+      <mat-cell class="cell cell-2" *matCellDef="let element"> <img class="profile" src="assets/images/avatar1.jpg"></mat-cell>
+    </ng-container> -->
+
+      <!-- <ng-container matColumnDef="product_name">
+        <mat-header-cell class="header cell-1" *matHeaderCellDef>Product Name </mat-header-cell>
+        <mat-cell class="cell cell-2" *matCellDef="let element">
+          {{ (element.product_name) ? element.product_name : '-'}} </mat-cell>
+      </ng-container> -->
+
+      <ng-container matColumnDef="SKU">
+        <mat-header-cell class="header cell-1" *matHeaderCellDef> SKU </mat-header-cell>
+        <mat-cell class="cell cell-2" *matCellDef="let element">
+          {{ (element.sku)? element.sku : '-' }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="product_quantity">
+        <mat-header-cell class="header cell-3" *matHeaderCellDef> Product Quantity </mat-header-cell>
+        <mat-cell class="cell cell-3" *matCellDef="let element">
+          {{ (element.product_quantity) ? element.product_quantity : '-'}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="product_mrp">
+        <mat-header-cell class="header cell-3" *matHeaderCellDef> Product MRP </mat-header-cell>
+        <mat-cell class="cell cell-3" *matCellDef="let element">
+          {{ (element.product_mrp) ? element.product_mrp : '-'}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="product_price">
+        <mat-header-cell class="header cell-3" *matHeaderCellDef> Product Price </mat-header-cell>
+        <mat-cell class="cell cell-3" *matCellDef="let element">
+          {{ (element.product_price) ? element.product_price : '-'}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="discounted_amount">
+        <mat-header-cell class="header cell-3" *matHeaderCellDef> Discount </mat-header-cell>
+        <mat-cell class="cell cell-3" *matCellDef="let element">
+          {{ (element.discounted_amount) ? element.discounted_amount : '-'}} </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <div class="mat-table__message no-records-found" *ngIf="!dataSource">No Record Found</div>
+
+
+
+    <div class="mat-table__wrapper mobile-view-list-section mt-3">
+      <div *ngIf="dataSource">
+        <mat-card class="mobile-view-card" *ngFor="let element of dataSource">
+          <!-- <div class="grid-list-mobile">
+            <label class="card-label">Product Name : </label>
+            <div class="label-discription">{{ (element.product_name) ? element.product_name : '-'}}</div>
+          </div> -->
+          <div class="grid-list-mobile">
+            <label class="card-label">SKU : </label>
+            <div class="label-discription">{{ (element.sku)? element.sku : '-' }}</div>
+          </div>
+          <div class="grid-list-mobile">
+            <label class="card-label">Product Quantity: </label>
+            <div class="label-discription">{{ (element.product_quantity) ? element.product_quantity : '-'}}</div>
+          </div>
+          <div class="grid-list-mobile">
+            <label class="card-label">Product MRP: </label>
+            <div class="label-discription">{{ (element.mrp) ? element.mrp : '-'}}</div>
+          </div>
+          <div class="grid-list-mobile">
+            <label class="card-label">Product Price: </label>
+            <div class="label-discription">{{ (element.product_price) ? element.product_price : '-'}}</div>
+          </div>
+          <div class="grid-list-mobile">
+            <label class="card-label">Discount: </label>
+            <div class="label-discription">{{ (element.discounted_amount) ? element.discounted_amount : '-'}}</div>
+          </div>
+        </mat-card>
+      </div>
+      <div class="no-records-found" *ngIf="!dataSource"><b>No Record Found</b></div>
+    </div>
+
+  </mat-dialog-content>
+</ng-container>
+
+<mat-dialog-actions align="center" class="btn-section">
+  <button mat-button [mat-dialog-close]="true" (click)="closeDialog()" class="delete-btns mat-btn-theme">Close</button>
+</mat-dialog-actions>

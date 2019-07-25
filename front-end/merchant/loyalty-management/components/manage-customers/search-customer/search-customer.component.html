@@ -1,0 +1,52 @@
+<div class="search-customer-container">
+  <form [formGroup]="customerSearch" novalidate>
+    <div class="row search-customer-row">
+      <div class="col-md-5">
+        <!-- (change)="handleChange($event)" -->
+        <mat-radio-group name="searchBy" formControlName="search_by_type">
+          <mat-label class="search-label">Search By:</mat-label>
+          <mat-radio-button value="mobile_number" color="primary">Mobile
+            Number</mat-radio-button>
+          <mat-radio-button value="customer_name" color="primary">Customer Name
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div class="col-md-5">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ filedLabel }} </mat-label>
+          <input matInput placeholder="{{ filedLabel }}" formControlName="search_label" (input)="inputValidator($event)"
+            [maxlength]="maxlength" [matAutocomplete]="auto" (blur)="updateValue($event.target.value)" autoFocus
+            (keypress)="callSearchMethod($event, customerSearch.value)">
+          <mat-spinner matSuffix *ngIf="isLoading" diameter="30"></mat-spinner>
+
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayCustomerFn"
+            (optionSelected)="getCustomer($event.option.value, customerSearch.value)">
+            <mat-option *ngFor="let item of customerList" [value]="item">
+              {{item.first_name}} {{item.last_name}} (<small>{{item.mobile_number}}</small>)
+            </mat-option>
+          </mat-autocomplete>
+          <mat-error *ngIf="customerSearch.get('search_label').hasError('minlength')">
+            {{ getFieldName(searchByField) }} required minimum
+            {{ customerSearch.get('search_label').errors?.minlength.requiredLength }}
+            {{ searchByField === 'mobile_number' ? 'digit.' : 'character length.' }}
+          </mat-error>
+          <mat-error *ngIf="customerSearch.get('search_label').hasError('required')">
+            {{ getFieldName(searchByField) }} is required.
+          </mat-error>
+
+          <mat-error *ngIf="customerSearch.get('search_label').errors?.serverError">
+            {{ customerSearch.get('search_label').errors?.message }}
+          </mat-error>
+        </mat-form-field>
+
+      </div>
+      <!-- <div class="col-md-2">
+        <button mat-raised-button class="mat-btn-theme" [disabled]="!customerSearch.valid || spinner.active"
+          (click)="searchCustomers(customerSearch.value)">Search
+          <mat-spinner class="spinner" [diameter]="spinner.spinnerSize" [color]="spinner.spinnerColor"
+            [mode]="spinner.mode" [value]="spinner.value" *ngIf="spinner.active"></mat-spinner>
+        </button>
+      </div> -->
+    </div>
+  </form>
+</div>

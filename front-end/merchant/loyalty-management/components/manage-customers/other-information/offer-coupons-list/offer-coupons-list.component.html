@@ -1,0 +1,56 @@
+<div class="mt-3">
+  <mat-table [dataSource]="dataSource" matSortActive="voucher_value" matSort matSortDirection="desc" matSortDisableClear>
+    <!-- milestone_id Column -->
+    <ng-container matColumnDef="milestone_id">
+      <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+      <mat-cell *matCellDef="let element">       
+        <p class="c-text2">Your {{element.campaign_title}} Reward</p>
+        <p class="c-text3">Coupon Expires at {{ element.expiry_date | date: 'EEEE' }}, {{ element.expiry_date | date: dateFormate }}</p>
+      </mat-cell>
+    </ng-container>
+
+    <!-- voucher_value Column -->
+    <ng-container matColumnDef="voucher_value">
+      <mat-header-cell *matHeaderCellDef> voucher value </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <span class="purchase-amount"><i class="fa fa-rupee ruppee-big"></i>
+          {{element.voucher_value}}/-</span>
+
+            <!-- <span class="purchase-amount"><i class="fa fa-rupee ruppee-big" *ngIf="element.reward_type !== 2"></i>
+              {{element.voucher_value}}{{(element.reward_type == 2)? " ": "/-" }} <i
+                *ngIf="element.reward_type == 2" class="ruppee-icon"
+                [ngClass]="{'reward-type' : element.reward_type == 2 }"></i><span
+                class="off-text">{{(element.reward_type == 2)? "OFF ": "" }}</span></span> -->
+
+      </mat-cell>
+    </ng-container>
+
+    <!-- voucher_code Column -->
+    <ng-container matColumnDef="voucher_code">
+      <mat-header-cell *matHeaderCellDef> voucher code </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <span class="half-circle half-circle1"></span>
+        <span class="half-circle half-circle2"></span>
+        <div [ngClass]="{'get-code' : element.coupon_used == 0}" (click)="element.coupon_used == 0 || element.coupon_used == 2 ? getCode(element) : ''">
+          <span class="coupon-redeemed voucher-redeemed2" [ngClass]="{'get-code' : element.coupon_used == 0}">
+            {{ (element.coupon_used == 1) ? element.voucher_code : "Get Code" }}
+          </span>
+          <p class="coupon-redeemed-text ng-star-inserted" *ngIf="element.coupon_used == 1">Coupon Redeemed</p>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+    <!--  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row> -->
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <div class="mat-table__message text-center mt-3 mb-3" *ngIf="!dataSource.hasItems">
+    No records found
+  </div>
+
+  <div class="mat-table__bottom">
+    <mat-spinner [diameter]="30" *ngIf="dataSource.loading$ | async" class="loader"></mat-spinner>
+    <mat-paginator [pageSize]="10" [pageIndex]="0" [length]="dataSource.paginatorTotal$ | async"
+      [showFirstLastButtons]="true"></mat-paginator>
+  </div>
+</div>

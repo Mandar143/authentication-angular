@@ -1,0 +1,47 @@
+.close-icon{
+    position: relative;
+    float: right;
+    right:7px;
+    // top:-44px;
+    background:url(../../../../../../../../assets/images/close-icon.png) 0 0 no-repeat;
+    height:20px;
+    width:20px;
+    /* display: inline-block; */
+    z-index: 1000;
+    cursor: pointer;
+  }
+  .delete-dialog-content{   
+    text-align: center;
+    margin-bottom: 21px;
+    margin:0;
+    padding:0;
+  }
+  :host /deep/ .mat-sort-header-button{
+      font-weight: bold;
+  }
+  .cell-1, .cell-2, .cell-3{
+    max-width:33.33%;
+    flex: 33.33%;
+    padding-right:8px;
+}
+.mat-cell:last-of-type, mat-footer-cell:last-of-type, mat-header-cell:last-of-type{
+    justify-content: left;
+}
+  .no-records-found{
+      padding:10px;
+  }
+  @media (max-width: 767px){
+    .mobile-view-list-section {
+        height: auto;
+    }
+    // .mat-dialog-content {
+    //     overflow: inherit!important;
+    // }
+  }
+
+  @media (max-width: 640px){
+    .no-records-found {
+        margin-top: -10px;
+        margin-bottom: 5px;
+    }
+  }

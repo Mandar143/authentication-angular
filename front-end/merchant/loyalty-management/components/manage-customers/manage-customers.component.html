@@ -1,0 +1,231 @@
+<!--div *ngIf="isPosAdmin; else isSubmerchant" -->
+<mat-card class="mat-card" *ngIf="isPosAdmin; else isSubmerchant">
+  <h3 class="card-title">Search Customer
+    <button mat-raised-button class="add_btn mb-3 mat-btn-theme float-right" matTooltip="Add New Customer"
+      [disabled]="!showAddBtn" (click)="addCustomer()" *ngIf="isPosUser()">
+      <i class="material-icons">
+        person_add
+      </i>
+    </button>
+  </h3>
+  <app-search-customer (customer)="getCustomer($event)"></app-search-customer>
+
+</mat-card>
+
+<!-- Edit Panel -->
+<div *ngIf="showData || showReg" class="scrollEditPanel">
+  <mat-card class="mat-card mt-2" *ngIf="showReg">
+    <h3 class="card-title">
+      <div class="col-md-12">
+        {{cardTitle}} Customer
+        <span class="close-icon" (click)="closeEditPanel()"></span>
+      </div>
+    </h3>
+    <app-profile-edit [showReg]="true" [error]="error" [user]="user" [isEdit]="isEdit" (submited)="onSubmit($event)"
+      (isDestroy)="isChildComponentsDestroy($event)"></app-profile-edit>
+  </mat-card>
+</div>
+
+<!-- Desktop -View -->
+<!-- Other Information Tabs -->
+<div id="scrollViewPanel"></div>
+  <div *ngIf="customer">
+    <mat-card class="mat-card mt-3" *ngIf="customer.customer_details as customerDetails" style="min-height: 100px;">
+      <h3 class="card-title">
+        {{ getFullName(customerDetails) | capsLetters }}
+        <span class="badge-status ml-2"
+          [ngClass]="isUserActive(customerDetails.status) ? 'badge-success': 'badge-danger'">
+          <span class="badge-text">{{ getUserStatus(customerDetails.status) }}</span>
+        </span>
+        <button mat-icon-button matTooltip="Edit" type="button" *ngIf="canEdit(customerDetails)"
+          (click)="editCustomer(customerDetails)" class="loyalty-edit">
+          <i class="material-icons material-icon-edit">edit</i>
+        </button>
+      </h3>
+      <!-- mat-stretch-tabs -->
+
+      <mat-tab-group (selectedTabChange)="selectedTabChange($event)">
+        <mat-tab label="Profile">
+          <ng-template matTabContent>
+            <mat-card class="mat-card mt-3 manage-card">
+              <div class="row">
+                <!-- <pre>
+                {{ customerDetails | json }}
+              </pre> -->
+                <div class="col-xl-4 col-md-3 col-lg-4 col-12" *ngIf="customerDetails?.mobile_number">
+                  <label class="profile-grid profile-label">Mobile Number: </label>
+                  <span class="profile-grid profile-desription">{{ customerDetails?.mobile_number }}
+                    <i class="material-icons email-icon-small"
+                      [matTooltip]="isVerified(customerDetails.mobile_verified) ? 'Verified':'Not Verify'"
+                      [ngClass]="isVerified(customerDetails.mobile_verified) ? 'mat-icon-success': 'mat-icon-danger'">
+                      {{ isVerified(customerDetails.mobile_verified) ? 'check_circle' : 'cancel' }}
+                    </i>
+                  </span>
+
+                </div>
+
+                <div class="col-xl-8 col-md-8 col-lg-8 col-12" *ngIf="customerDetails?.email_address">
+                  <label class="profile-grid profile-label">Email: </label>
+                  <span class="profile-grid profile-desription">{{ customerDetails?.email_address }}
+                    <i class="material-icons email-icon-small"
+                      [matTooltip]="isVerified(customerDetails.email_verified) ? 'Verified' : 'Not Verified'"
+                      [ngClass]="isVerified(customerDetails.email_verified) ? 'mat-icon-success': 'mat-icon-danger'">
+                      {{ isVerified(customerDetails.email_verified) ? 'check_circle' : 'cancel' }} </i>
+                  </span>
+                  <span *ngIf="!isVerified(customerDetails.email_verified)">
+                    <a (click)="sendVerify(customerDetails)"
+                      style="color: #0062a8;cursor: pointer; text-decoration: underline;">
+                      Verify </a>
+                  </span>
+                </div>
+
+                <div class="col-xl-4 col-md-3 col-lg-4 col-12" *ngIf="customerDetails?.gender">
+                  <label class="profile-grid profile-label">Gender: </label>
+                  <span class="profile-grid profile-desription">{{ getGender(customerDetails?.gender) }}</span>
+                </div>
+
+                <div class="col-xl-4 col-md-3 col-lg-4 col-12" *ngIf="customerDetails?.date_of_birth">
+                  <label class="profile-grid profile-label">Birthday: </label>
+                  <span class="profile-grid profile-desription">{{ customerDetails?.date_of_birth | date: dateFormate }}</span>
+                </div>
+
+                <div class="col-xl-4 col-md-3 col-lg-4 col-12" *ngIf="customerDetails?.marital_status">
+                  <label class="profile-grid profile-label">Marital Status: </label>
+                  <span
+                    class="profile-grid profile-desription">{{ getMaritalStatus(customerDetails?.marital_status) }}</span>
+                </div>
+
+                <div class="col-xl-4 col-md-3 col-lg-4 col-12">
+                  <label class="profile-grid profile-label">City: </label>
+                  <span class="profile-grid profile-desription">{{ customerDetails.city_name ? customerDetails.city_name
+                  : 'N/A' }}</span>
+                </div>
+
+                <div class="col-xl-4 col-md-3 col-lg-4 col-12">
+                  <label class="profile-grid profile-label">Pincode: </label>
+                  <span class="profile-grid profile-desription">{{ customerDetails.pin_code ? customerDetails.pin_code :
+                  'N/A' }}</span>
+                </div>
+
+                <div class="col-xl-4 col-md-3 col-lg-4 col-12" *ngIf="customerDetails?.anniversary_date">
+                  <label class="profile-grid profile-label">Anniversary Date: </label>
+                  <span class="profile-grid profile-desription">{{ customerDetails?.anniversary_date | date: dateFormate }}</span>
+                </div>
+
+                <div class="col-xl-4 col-md-3 col-lg-4 col-12" *ngIf="customerDetails?.spouse_dob">
+                  <label class="profile-grid profile-label">Spouse DOB: </label>
+                  <span class="profile-grid profile-desription">{{ customerDetails?.spouse_dob | date: dateFormate }}</span>
+                </div>
+
+                <!-- <div class="col-xl-4 col-md-3 col-lg-4 col-12" *ngIf="customerDetails?.away_from_next_milestone">
+                <label class="profile-grid profile-label">Away From Next Milestone: </label>
+                <span class="profile-grid profile-desription">{{ customerDetails?.away_from_next_milestone }} </span>
+              </div>
+
+              <div class="col-xl-4 col-md-3 col-lg-4 col-12" *ngIf="customerDetails?.current_purchase_value">
+                <label class="profile-grid profile-label">Current Purchase Value: </label>
+                <span class="profile-grid profile-desription">{{ customerDetails?.current_purchase_value }}</span>
+              </div>
+
+              <div class="col-xl-4 col-md-3 col-lg-4 col-12">
+                <label class="profile-grid profile-label">Current Milestone Benefit: </label>
+                <span class="profile-grid profile-desription">{{ customerDetails?.current_milestone_benefit }}</span>
+              </div> -->
+              </div>
+            </mat-card>
+            <mat-card class="mat-card">
+              <h3 class="card-title">Your Milestone Journey</h3>
+              <div *ngIf="!isMobile && currentPurchaseValue > 0" class="milestone-marker-wrapper"
+                [style.width.%]="progressWidth">
+                <div class="marker-inner">
+                  <span class="milestone-marker">
+                    <span class="marker-tooltip"><i class="fa fa-rupee"></i> {{currentPurchaseValue}}</span>
+                  </span>
+                </div>
+              </div>
+              <div *ngIf="isMobile && currentPurchaseValue > 0" class="milestone-marker-wrapper"
+                [style.width.px]="viewHeight">
+                <div class="marker-inner" [style.width.%]="progressWidth">
+                  <span class="milestone-marker">
+                    <span class="marker-tooltip"><i class="fa fa-rupee"></i> {{currentPurchaseValue}}</span>
+                  </span>
+                </div>
+              </div>
+              <div class="step-wrapper">
+                <mat-progress-bar [style.width.px]="viewHeight" #matProgress class="progress-bar" mode="determinate"
+                  [value]="progressWidth"></mat-progress-bar>
+                <ul class="step-container mt-5" #mainScreen>
+                  <li class="step-list" *ngFor="let milestoneDetails of milestoneDetails; let last = last">
+                    <span class="range-count" *ngIf="!isMobile"><i [ngClass]="!last ? 'fa fa-rupee' : ''"></i>
+                      {{milestoneDetails.milestone_benefit_value}}</span>
+                    <span class="range-count" *ngIf="isMobile"><i [ngClass]="!last ? 'fa fa-rupee' : ''"></i>
+                      {{milestoneDetails.milestone_reach_at}}</span>
+                    <a class="steps" [ngClass]="{'crossed-step' : currentMilestone >= milestoneDetails.id}"></a>
+                    <span class="range-ammount" *ngIf="!isMobile"><i class="fa fa-rupee"></i>
+                      {{milestoneDetails.milestone_reach_at}}</span>
+                    <div class="mobile-content" *ngIf="isMobile">
+                      <div *ngFor="let voucherDetails of voucherDetails">
+
+                        <div *ngIf="(voucherDetails && milestoneDetails.id == voucherDetails.milestone_id)">
+                          <p class="mobile-text1">Coupon generated after spending <i class="fa fa-rupee"></i>
+                            {{voucherDetails.purchase_value}}</p>
+                          <p class="mobile-text2">Your {{milestoneNames[voucherDetails.milestone_id]}} milestone reward
+                            <i class="fa fa-rupee"></i> {{voucherDetails.voucher_value}}</p>
+                          <p class="mobile-text3">Coupon Expire’s at {{voucherDetails.expiry_date | date: dateFormate}}
+                          </p>
+                          <div class="mobile-code" [ngClass]="{'get-code' : voucherDetails.coupon_used == 0}">
+                            <span class="coupon-redeemed voucher-redeemed2"
+                              [ngClass]="{'get-code' : voucherDetails.coupon_used == 0}">{{voucherDetails.voucher_code}}</span>
+                            <p class="coupon-redeemed-text" *ngIf="voucherDetails.coupon_used == 1">Voucher Redeemed</p>
+                          </div>
+                        </div>
+
+                      </div>
+                      <!-- <div *ngIf="milestoneDetails.id">sdfsdfsd</div> -->
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <p class="text-center milestone-text">You are <i class="fa fa-rupee"></i> {{customerMilestone}} away from
+                next
+                milestone</p>
+            </mat-card>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="Milestones Rewards">
+          <ng-template matTabContent>
+            <app-vouchers-coupons-list [user]="customerDetails"></app-vouchers-coupons-list>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="Offers">
+          <ng-template matTabContent>
+            <app-offer-coupons-list [user]="customerDetails"></app-offer-coupons-list>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="Transactions">
+          <ng-template matTabContent>
+            <mat-card class="mat-card mt-3 manage-card">
+              <app-customer-transactions [user]="customerDetails"></app-customer-transactions>
+            </mat-card>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="Mobile Number Change">
+          <ng-template matTabContent>
+            <app-mobile-number-change [user]="customerDetails" (loadMobileChangeList)="loadMobileChangeList($event)"></app-mobile-number-change>
+            <app-get-mobile-number-change-log *ngIf="mobileChangeFlag" [user]="customerDetails"></app-get-mobile-number-change-log>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="Home Branch Change">
+          <ng-template matTabContent>
+            <app-location-edit [user]="customerDetails" (homeBranchChangeList)="homeBranchChangeList($event)"></app-location-edit>
+            <app-get-home-branch-change-requests *ngIf="homeBranchChangeFlag" [user]="customerDetails" ></app-get-home-branch-change-requests>
+          </ng-template>
+        </mat-tab>
+
+      </mat-tab-group>
+    </mat-card>
+  </div>
+<!-- </div> -->
+<ng-template #isSubmerchant>
+  <app-manage-customers-list (selected)="onSelected($event,action)"></app-manage-customers-list>
+</ng-template>

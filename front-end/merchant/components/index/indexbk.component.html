@@ -1,0 +1,401 @@
+<mat-card class="mat-card">
+  <form [formGroup]="dashboardFilter">
+    <div class="row statistics-header">
+      <div class="col-lg-4 col-md-4 col-xl-4 col-12 ">
+        <h3 class="card-title statistics-title">Dashboard</h3>
+      </div>
+      <div class="col-lg-4 col-md-4 col-xl-4 col-12 ">
+        <mat-form-field style="width:100% !important" appearance="outline" class="search-location select-range" *ngIf="userType == 4">
+          <mat-label>Search Location</mat-label>
+          <input type="text" placeholder="Search Location" matInput formControlName="location"
+            (focus)="locationValueChange()" [matAutocomplete]="auto">
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn"
+            (optionSelected)='selectLocation($event.option.value)'>
+            <mat-option [value]='defaultAllLocation'>All Locations</mat-option>
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+              {{option.location_name}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-4 col-md-4 col-xl-4 col-12 ">
+        <mat-form-field style="width:100% !important"  appearance="outline" class="select-range" *ngIf="userType >= 4">
+          <mat-label>Select Range</mat-label>
+          <input type="text" formControlName="range" ngxDaterangepickerMd [showCustomRangeLabel]="true"
+            [alwaysShowCalendars]="true" [ranges]="ranges" [linkedCalendars]="true" [isInvalidDate]="isInvalidDate"
+            [showClearButton]="true" matInput placeholder="Select Range" (change)="change($event)" autocomplete="off"
+            [locale]="{applyLabel: 'ok', format: 'DD MMM YYYY'}">
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+
+  <app-analytics-sale [setFilter]='graphFilter'></app-analytics-sale>
+  <app-activity [setFilter]='graphFilter'></app-activity>
+  <app-analytics-contribution [setFilter]='graphFilter'></app-analytics-contribution>
+
+  <div class="row graph-grid-row"
+    *ngIf="average_trans.length > 0 || highOrder_details.length > 0 || average_transaction_per_customer_count.length > 0 || average_transaction_per_customer_value.length > 0 || weekend_weekdays_details.length > 0 || weekend_weekdays_count_details.length > 0 || weekend_weekdays_value_details.length > 0">
+    <div class="col-lg-12 col-md-12 col-xl-12 col-12 graph-grid">
+      <mat-card class="mat-card" *ngIf="userType >= 4">
+        <h3 class="chart-title">Store Sales</h3>
+        <div [@.disabled]="true">
+
+          <mat-tab-group (selectedTabChange)="onLinkSales($event)">
+            <mat-tab label="Average Transaction (INR)" *ngIf="average_trans.length > 0">
+              <ngx-charts-bar-vertical [xAxisTickFormatting]="this.dateTickFormatting" [view]="view"
+                [scheme]="colorScheme" [results]="average_trans" [legend]="showLegend" [gradient]="gradient"
+                [xAxis]="showXAxis" [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel" [showDataLabel]="false"
+                [showYAxisLabel]="showYAxisLabel" [barPadding]="20" [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="'Average Transaction (INR)'" [legendTitle]="legendTitle">
+              </ngx-charts-bar-vertical>
+            </mat-tab>
+            <mat-tab label="Highest Sales (INR)" *ngIf="highOrder_details.length > 0">
+              <div class="chart-wrapper">
+                <ngx-charts-bar-vertical [xAxisTickFormatting]="this.dateTickFormatting" [view]="view"
+                  [scheme]="colorScheme" [results]="highOrder_details" [legend]="showLegend" [gradient]="gradient"
+                  [xAxis]="showXAxis" [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel" [showDataLabel]="true"
+                  [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="'Highest Sales (INR)'"
+                  [legendTitle]="legendTitle">
+                </ngx-charts-bar-vertical>
+              </div>
+            </mat-tab>
+            <mat-tab label="Average Transaction Per Customer"
+              *ngIf="average_transaction_per_customer_count.length > 0 || average_transaction_per_customer_value.length > 0">
+              <mat-button-toggle-group name="fontStyle" aria-label="Font Style" class="mt-3" [value]="selectedCustVal"
+                (change)="countPerCusto($event.value)">
+                <mat-button-toggle value="countPerCustomer">Count</mat-button-toggle>
+                <mat-button-toggle value="countPerCustValues">Values</mat-button-toggle>
+              </mat-button-toggle-group>
+              <!-- <button mat-raise-button color="primary" (click)="countCustomer();"> Count</button>
+              <button mat-raise-button color="primary" (click)="countValues();"> Values</button> -->
+              <div class="chart-wrapper">
+                <ngx-charts-bar-vertical [xAxisTickFormatting]="this.dateTickFormatting" [view]="view"
+                  [scheme]="colorScheme"
+                  [results]="(countAvgCust)? average_transaction_per_customer_count :average_transaction_per_customer_value"
+                  [legend]="showLegend" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
+                  [showXAxisLabel]="showXAxisLabel" [showDataLabel]="true" [showYAxisLabel]="showYAxisLabel"
+                  [xAxisLabel]="xAxisLabel"
+                  [yAxisLabel]="(countAvgCust)? 'Average Transaction Per Customer' :'Average Transaction Per Customer(INR)'"
+                  [legendTitle]="legendTitle">
+                </ngx-charts-bar-vertical>
+              </div>
+            </mat-tab>
+            <!-- <mat-tab label="Average items">
+              <ngx-charts-bar-vertical [xAxisTickFormatting]="this.dateTickFormatting" [view]="view"
+                [scheme]="colorScheme" [results]="single" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
+                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+              </ngx-charts-bar-vertical>
+            </mat-tab> -->
+            <mat-tab label="Weekday-Weekend Ratio (%)"
+              *ngIf="weekend_weekdays_details && weekend_weekdays_details.length > 0">
+              <div class="chart-wrapper">
+                <ngx-charts-line-chart [legend]="showLegend" [scheme]="colorScheme" [view]="view"
+                  [results]="weekend_weekdays_details" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
+                  [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                  [yAxisLabel]="'Weekday-Weekend ratio (%)'" [autoScale]="autoScale" [timeline]="timeline"
+                  (select)="onSelect($event)" [legendTitle]="legendTitle" [showRefLines]="true" [showRefLabels]="true">
+                </ngx-charts-line-chart>
+              </div>
+              <!-- <ngx-charts-bar-vertical-2d [xAxisTickFormatting]="this.dateTickFormatting" [view]="view"
+                [scheme]="colorScheme" [results]="multi" [legend]="showLegend" [gradient]="gradient" [xAxis]="showXAxis"
+                [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
+                [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+              </ngx-charts-bar-vertical-2d> -->
+            </mat-tab>
+            <mat-tab label="Weekday-Weekend"
+              *ngIf="weekend_weekdays_count_details && (weekend_weekdays_count_details.length > 0 || weekend_weekdays_value_details.length > 0)">
+              <mat-button-toggle-group name="fontStyle" aria-label="Font Style" [value]="selectedVal" class="mt-3"
+                (change)="onValWeekdayChange($event.value)">
+                <mat-button-toggle value="countWeekendCount">Count</mat-button-toggle>
+                <mat-button-toggle value="countWeekendValues">Values</mat-button-toggle>
+              </mat-button-toggle-group>
+              <!-- <button mat-raised-button class="mat-btn-theme submitBtn" color="primary" (click)="countWeekendCount();"> Count</button>
+              <button mat-raise-button color="primary" (click)="countWeekendValues();"> Values</button> -->
+              <div class="chart-wrapper">
+                <ngx-charts-bar-vertical-2d [xAxisTickFormatting]="this.dateTickFormatting" [view]="view"
+                  [scheme]="colorScheme"
+                  [results]="(countWeekendWeekday) ? weekend_weekdays_count_details  : weekend_weekdays_value_details"
+                  [legend]="showLegend" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
+                  [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [showDataLabel]="true"
+                  [xAxisLabel]="xAxisLabel"
+                  [yAxisLabel]="(countWeekendWeekday) ? 'Weekday-Weekend Count' : 'Weekday-Weekend Values'"
+                  [legendTitle]="legendTitle">
+                </ngx-charts-bar-vertical-2d>
+                <!-- <ngx-charts-bar-vertical-2d [xAxisTickFormatting]="this.dateTickFormatting" [view]="view"
+                [scheme]="colorScheme" [results]="multi" [legend]="showLegend" [gradient]="gradient" [xAxis]="showXAxis"
+                [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
+                [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel">
+              </ngx-charts-bar-vertical-2d> -->
+              </div>
+            </mat-tab>
+
+          </mat-tab-group>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+ <!--  <div class="row  graph-grid-row" *ngIf="userType >= 4">
+
+    <div class="col-lg-2 col-md-2 col-xl-4 col-12 graph-grid">
+      <mat-card class="pieChart">
+        <h3 class="chart-title">Gender Breakup (%)</h3>
+        <ngx-charts-advanced-pie-chart [view]="viewPie" [scheme]="colorScheme" [results]="gender_details"
+          [gradient]="gradientPie" (select)="onSelect($event)" [label]="'Gender'">
+        </ngx-charts-advanced-pie-chart>
+      </mat-card>
+    </div>
+    <div class="col-lg-2 col-md-2 col-xl-4 col-12 graph-grid">
+      <mat-card class="pieChart">
+        <h3 class="chart-title">Members - Active/Inactive (%)</h3>
+        <ngx-charts-advanced-pie-chart [view]="viewPie" [scheme]="colorScheme" [results]="user_status"
+          [gradient]="gradientPie" (select)="onSelect($event)" [label]="'Active/Inactive'">
+        </ngx-charts-advanced-pie-chart>
+      </mat-card>
+    </div>
+    <div class="col-lg-2 col-md-2 col-xl-4 col-12 graph-grid">
+      <mat-card class="pieChart">
+        <h3 class="chart-title">Transactional Activity of Members</h3>
+        <ngx-charts-advanced-pie-chart [view]="viewPie" [scheme]="colorScheme" [results]="status_details_new"
+          [gradient]="gradientPie" (select)="onSelect($event)" [label]="'Active/Dormant'">
+        </ngx-charts-advanced-pie-chart>
+      </mat-card>
+    </div>
+  </div> -->
+  <div class="row graph-grid-row" *ngIf="value_of_rewards.length > 0 || number_of_members.length > 0">
+    <div class="col-lg-12 col-md-12 col-xl-12 col-12 graph-grid">
+      <mat-card class="mat-card" *ngIf="userType >= 4">
+        <h3 class="chart-title">Redeemed Rewards</h3>
+        <div [@.disabled]="true">
+
+          <mat-tab-group (selectedTabChange)="onLinkRewards($event)">
+            <!--  <mat-tab label="Milestone Stages ratio (%)">
+              <ngx-charts-line-chart [legend]="showLegend" [view]="view" [scheme]="colorScheme" [results]="multi"
+                [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="milestones" [yAxisLabel]="" [autoScale]="autoScale"
+                [timeline]="timeline" (select)="onSelect($event)">
+              </ngx-charts-line-chart>
+            </mat-tab> -->
+            <mat-tab label="Number of members" *ngIf="number_of_members && number_of_members.length > 0">
+              <ngx-charts-bar-vertical [xAxisTickFormatting]="this.dateTickFormatting" [view]="view"
+                [scheme]="colorScheme" [legend]="showLegend" [results]="number_of_members" [gradient]="gradient"
+                [xAxis]="showXAxis" [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabelMembers"
+                [showYAxisLabel]="showYAxisLabelMembers" [xAxisLabel]="xAxisLabel" [yAxisLabel]="'Number of members'"
+                [showDataLabel]="true" [legendTitle]="legendTitle">
+              </ngx-charts-bar-vertical>
+            </mat-tab>
+            <mat-tab label="Value of rewards redeemed" *ngIf="value_of_rewards && value_of_rewards.length > 0">
+              <ngx-charts-bar-vertical [xAxisTickFormatting]="this.dateTickFormatting" [view]="view"
+                [scheme]="colorScheme" [results]="value_of_rewards" [legend]="showLegend" [gradient]="gradient"
+                [xAxis]="showXAxis" [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="'Value of rewards redeemed'"
+                [showDataLabel]="true" [legendTitle]="legendTitle">
+              </ngx-charts-bar-vertical>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="row graph-grid-row"
+    *ngIf="store_sales_count.length > 0 || store_registered_customers_count.length > 0 || store_redemptions_count.length > 0">
+    <div class="col-lg-12 col-md-12 col-xl-12 col-12 graph-grid">
+      <mat-card class="mat-card" *ngIf="userType >= 4">
+        <h3 class="chart-title">Contribution to Crocs Club</h3>
+        <div [@.disabled]="true">
+
+          <mat-tab-group (selectedTabChange)="onLinkStores($event)">
+            <mat-tab label="Sales" *ngIf="store_sales_count.length > 0">
+              <mat-button-toggle-group name="fontStyle" aria-label="Font Style" class="mt-3" [value]="selectedSalesVal"
+                (change)="onValSales($event.value)">
+                <mat-button-toggle value="countSaleValue">Count</mat-button-toggle>
+                <mat-button-toggle *ngIf="userType == 5" value="countPerValue">Percentage</mat-button-toggle>
+                <mat-button-toggle *ngIf="userType == 4" value="salesValue">Value</mat-button-toggle>
+              </mat-button-toggle-group>
+              <ngx-charts-bar-vertical [legend]="showLegend" [xAxisTickFormatting]="this.dateTickFormatting"
+                [view]="view" [scheme]="colorScheme"
+                [results]="(ctSales)? store_sales_count : (ctSalesValue) ? store_sales_value :store_sales_percentage"
+                [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="'Sales'"
+                (select)="onSelect($event)" [showDataLabel]="true"
+                [legendTitle]="(ctSales)? 'Sales Count' : 'Sales Percentage'">
+              </ngx-charts-bar-vertical>
+            </mat-tab>
+            <mat-tab label="Registrations" *ngIf="store_registered_customers_count.length > 0">
+              <mat-button-toggle-group name="fontStyle" aria-label="Font Style" class="mt-3" [value]="selectedRegVal"
+                (change)="onValReg($event.value)">
+                <mat-button-toggle value="countReg">Count</mat-button-toggle>
+                <mat-button-toggle *ngIf="userType == 5" value="countRegPerc">Percentage</mat-button-toggle>
+              </mat-button-toggle-group>
+              <div class="chart-wrapper">
+
+                <ngx-charts-bar-vertical [legend]="showLegend" [xAxisTickFormatting]="this.dateTickFormatting"
+                  [view]="view" [scheme]="colorScheme"
+                  [results]="(regCount) ? store_registered_customers_count : store_registered_customers_percentage"
+                  [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel"
+                  [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="'Registrations'"
+                  (select)="onSelect($event)" [showDataLabel]="true"
+                  [legendTitle]="(regCount) ? 'Registrations Count': 'Registrations Percentage'">
+                </ngx-charts-bar-vertical>
+              </div>
+            </mat-tab>
+
+            <mat-tab label="Redemptions" *ngIf="store_redemptions_count.length > 0">
+              <mat-button-toggle-group name="fontStyle" aria-label="Font Style" class="mt-3" [value]="selectedRegVal"
+                (change)="onValReg($event.value)">
+                <mat-button-toggle value="countReg">Count</mat-button-toggle>
+                <mat-button-toggle *ngIf="userType == 5" value="countRegPerc">Percentage</mat-button-toggle>
+              </mat-button-toggle-group>
+              <div class="chart-wrapper">
+
+                <ngx-charts-bar-vertical [legend]="showLegend" [xAxisTickFormatting]="this.dateTickFormatting"
+                  [view]="view" [scheme]="colorScheme"
+                  [results]="(regCount) ? store_redemptions_count : store_redemptions" [gradient]="gradient"
+                  [xAxis]="showXAxis" [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel"
+                  [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="'Redemptions'"
+                  (select)="onSelect($event)" [showDataLabel]="true"
+                  [legendTitle]="(regCount) ? 'Registrations Count': 'Registrations Percentage'">
+                </ngx-charts-bar-vertical>
+              </div>
+            </mat-tab>
+            <!-- <mat-tab label="Campaigns Usage">
+              <ngx-charts-bar-vertical [xAxisTickFormatting]="this.dateTickFormatting" [view]="view"
+                [scheme]="colorScheme" [results]="single" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
+                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+              </ngx-charts-bar-vertical>
+            </mat-tab> -->
+
+          </mat-tab-group>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+  <!--<div class="col-lg-6 col-md-6 col-xl-6 col-12 graph-grid">
+      <mat-card class="mat-card" *ngIf="userType==5">
+        <h3 class="chart-title">Leaderboard position of the store vis-a-vis other stores for Crocs Club</h3>
+        <div [@.disabled]="true">
+
+         
+        </div>
+      </mat-card>
+    </div>
+  </div>
+  <div class="row graph-grid-row">
+    <div class="col-lg-6 col-md-6 col-xl-6 col-12 graph-grid">
+      <mat-card class="mat-card" *ngIf="userType==5">
+        <h3 class="chart-title">Contribution of the store to Crocs Club in terms of %</h3>
+        <div [@.disabled]="true">
+
+          <mat-tab-group>
+            <mat-tab label="Registered Members">
+              <ngx-charts-bar-vertical [xAxisTickFormatting]="this.dateTickFormatting" [view]="view"
+                [scheme]="colorScheme" [results]="single" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
+                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+              </ngx-charts-bar-vertical>
+            </mat-tab>
+            <mat-tab label="Sales">
+              <ngx-charts-bar-vertical [xAxisTickFormatting]="this.dateTickFormatting" [view]="view"
+                [scheme]="colorScheme" [results]="single" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
+                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+              </ngx-charts-bar-vertical>
+            </mat-tab>
+            <mat-tab label="Redemptions">
+              <ngx-charts-bar-vertical [xAxisTickFormatting]="this.dateTickFormatting" [view]="view"
+                [scheme]="colorScheme" [results]="single" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
+                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+              </ngx-charts-bar-vertical>
+            </mat-tab>
+          
+
+          </mat-tab-group>
+        </div>
+      </mat-card>
+    </div>
+    <div class="col-lg-6 col-md-6 col-xl-6 col-12 graph-grid">
+      <mat-card class="mat-card" *ngIf="userType==5">
+        <h3 class="chart-title">Sales contribution to milestones vs. Rewards redeemed</h3>
+        <div [@.disabled]="true">
+
+          <mat-tab-group>
+            <mat-tab label="Average Transaction customer">
+              <ngx-charts-bar-vertical [xAxisTickFormatting]="this.dateTickFormatting" [view]="view"
+                [scheme]="colorScheme" [results]="single" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
+                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+              </ngx-charts-bar-vertical>
+            </mat-tab>
+            <mat-tab label="Average items order per customer">
+              <ngx-charts-bar-vertical [xAxisTickFormatting]="this.dateTickFormatting" [view]="view"
+                [scheme]="colorScheme" [results]="single" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
+                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+              </ngx-charts-bar-vertical>
+            </mat-tab>
+            <mat-tab label="Highest Sales">
+              <ngx-charts-bar-vertical [xAxisTickFormatting]="this.dateTickFormatting" [view]="view"
+                [scheme]="colorScheme" [results]="single" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
+                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+              </ngx-charts-bar-vertical>
+            </mat-tab>
+            <mat-tab label="Weekday-Weekend ratio (%)">
+              <ngx-charts-bar-vertical [xAxisTickFormatting]="this.dateTickFormatting" [view]="view"
+                [scheme]="colorScheme" [results]="single" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
+                [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+              </ngx-charts-bar-vertical>
+            </mat-tab>
+
+          </mat-tab-group>
+        </div>
+      </mat-card>
+    </div>
+  </div> -->
+
+  <mat-card class="mat-card" *ngIf="userType < 4">
+
+    <div class="row">
+      <div class="col-lg-3 col-md-3 col-xl-3 col-12 cards merchant-grid1">
+        <a class="anchor">
+          <mat-card class="example-card">
+            <p class="grid-count">10</p>
+            <p class="merchant-name">Admins</p>
+          </mat-card>
+        </a>
+      </div>
+
+      <div class="col-lg-3 col-md-3 col-xl-3 col-12 cards merchant-grid2">
+        <a class="anchor">
+          <mat-card class="example-card">
+            <p class="grid-count">50</p>
+            <p class="merchant-name">Merchant</p>
+          </mat-card>
+        </a>
+      </div>
+
+      <div class="col-lg-3 col-md-3 col-xl-3 col-12 cards merchant-grid3">
+        <a class="anchor">
+          <mat-card class="example-card">
+            <p class="grid-count">70</p>
+            <p class="merchant-name">Sub Merchant</p>
+          </mat-card>
+        </a>
+      </div>
+
+      <div class="col-lg-3 col-md-3 col-xl-3 col-12 cards merchant-grid4">
+        <a class="anchor">
+          <mat-card class="example-card">
+            <p class="grid-count">70</p>
+            <p class="merchant-name">POS</p>
+          </mat-card>
+        </a>
+      </div>
+    </div>
+  </mat-card>
+</mat-card>

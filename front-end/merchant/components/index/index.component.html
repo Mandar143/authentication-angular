@@ -1,0 +1,36 @@
+<mat-card class="mat-card">
+  <form [formGroup]="dashboardFilter">
+    <div class="row statistics-header">
+      <div class="col-lg-4 col-md-4 col-xl-4 col-12 ">
+        <h3 class="card-title statistics-title">Dashboard</h3>
+      </div>
+      <div class="col-lg-4 col-md-4 col-xl-4 col-12 ">
+        <mat-form-field style="width:100% !important" appearance="outline" class="search-location select-range"
+          *ngIf="userType == 4">
+          <mat-label>Search Location</mat-label>
+          <input type="text" placeholder="Search Location" matInput formControlName="location"
+            (focus)="locationValueChange()" [matAutocomplete]="auto">
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn"
+            (optionSelected)='selectLocation($event.option.value)'>
+            <mat-option [value]='defaultAllLocation'>All Locations</mat-option>
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+              {{option.location_name}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div class="col-lg-4 col-md-4 col-xl-4 col-12 ">
+        <mat-form-field style="width:100% !important" appearance="outline" class="select-range" *ngIf="userType >= 4">
+          <mat-label>Select Range</mat-label>
+          <input type="text" formControlName="range" ngxDaterangepickerMd [showCustomRangeLabel]="true"
+            [alwaysShowCalendars]="true" [ranges]="ranges" [linkedCalendars]="true" [isInvalidDate]="isInvalidDate"
+            [showClearButton]="true" matInput placeholder="Select Range" (change)="change($event)" autocomplete="off"
+            [locale]="{applyLabel: 'ok', format: 'DD MMM YYYY'}">
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+
+  <app-analytics-sale [userType]="userType" [setFilter]='graphFilter'></app-analytics-sale>
+  <app-activity [setFilter]='graphFilter'></app-activity>
+  <app-analytics-contribution [userType]="userType" [setFilter]='graphFilter'></app-analytics-contribution>

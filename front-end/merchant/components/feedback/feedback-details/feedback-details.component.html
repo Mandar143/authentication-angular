@@ -1,0 +1,7 @@
+<ng-container>
+  <h3 class="card-title">Customer Feedback {{data.first_name}} {{data.last_name}} <span class="close-icon"
+      (click)="closeDialog()"></span></h3>
+  <p>
+    {{data.message | unescapeData}}
+  </p>
+</ng-container>

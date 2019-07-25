@@ -1,0 +1,129 @@
+<div class="filters mt-3">
+  <form [formGroup]="searchForm">
+    <div class="clearfix mb-2 mt-3 col-lg-4 col-xl-4 col-md-4 col-12">
+      <mat-form-field appearance="outline">
+        <mat-label>Order Status</mat-label>
+        <mat-select formControlName="order_status" (selectionChange)="loadTransactionList()">
+          <mat-option *ngFor="let st of status" [value]="st.value">
+            {{st.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
+</div>
+
+<div class="mat-table__wrapper list-table mt-3">
+
+  <mat-table [dataSource]="transactionList" matSort matSortActive="created_at" matSortDirection="asc"
+    matSortDisableClear class="lmat-elevation-z8 mat-table-section dashboard-table desktop-view-table" >
+
+    <ng-container matColumnDef="order_number">
+      <mat-header-cell class="header cell-1" *matHeaderCellDef mat-sort-header> Order Number </mat-header-cell>
+      <mat-cell class="cell cell-2" *matCellDef="let element"> {{(element.order_number) ? element.order_number : "-"}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="order_date">
+      <mat-header-cell class="header cell-1" *matHeaderCellDef mat-sort-header> Order Date </mat-header-cell>
+      <mat-cell class="cell cell-2" *matCellDef="let element">
+        {{element.order_date | date: dateFormate}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="calculated_amount">
+      <mat-header-cell class="header cell-1" *matHeaderCellDef mat-sort-header> Amount </mat-header-cell>
+      <mat-cell class="cell cell-2" *matCellDef="let element">
+        {{(element.calculated_amount) ? element.calculated_amount : "-"}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="order_status">
+      <mat-header-cell class="header cell-1" *matHeaderCellDef mat-sort-header> Order Status </mat-header-cell>
+      <mat-cell class="cell cell-2" *matCellDef="let element">
+        {{(element.order_status_text) ? element.order_status_text : "-"}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="total_items">
+      <mat-header-cell class="header cell-1" *matHeaderCellDef mat-sort-header> Total Items </mat-header-cell>
+      <mat-cell class="cell cell-2" *matCellDef="let element"> {{(element.total_items) ? element.total_items : "-"}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="store_code">
+      <mat-header-cell class="header cell-1" *matHeaderCellDef mat-sort-header> Store Name </mat-header-cell>
+      <mat-cell class="cell cell-2" *matCellDef="let element"> {{(element.store_code) ? (element.store_code) : "-"}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Action">
+      <mat-header-cell class="header cell-1" *matHeaderCellDef> Actions </mat-header-cell>
+      <mat-cell class="cell cell-2" *matCellDef="let element">
+        <button mat-icon-button matTooltip="View"  (click)="viewOrderItems(element)"
+               style="flex-shrink:unset;">
+              <mat-icon color="primary">remove_red_eye</mat-icon>
+            </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+  <div class="mat-table__message text-center mt-3 mb-3" *ngIf="!dataSource.hasItems">
+    No records found
+  </div>
+  <!-- Message for empty data  -->
+  <!-- </div> -->
+  <!-- start: BOTTOM -->
+  <div class="mat-table__bottom">
+    <mat-spinner [diameter]="30" *ngIf="dataSource.loading$ | async" class="loader"></mat-spinner>
+    <mat-paginator [pageSize]="10" [pageIndex]="0" [length]="dataSource.paginatorTotal$ | async"
+      [showFirstLastButtons]="true"></mat-paginator>
+  </div>
+</div>
+
+
+<!-- Mobile -View -->
+<div class="mat-table__wrapper mobile-view-list-section mt-3">
+
+  <mat-card class="mobile-view-card" *ngFor="let row of transactionList">
+    <div class="grid-list-mobile">
+      <label class="card-label">order_number:</label>
+      <div class="label-discription">{{row.order_number}}</div>
+    </div>
+    <div class="grid-list-mobile">
+      <label class="card-label">order_date:</label>
+      <div class="label-discription">{{row.order_date | date:'dd/MM/yyyy'}}</div>
+    </div>
+    <div class="grid-list-mobile">
+      <label class="card-label">amount:</label>
+      <div class="label-discription">{{row.calculated_amount}}</div>
+    </div>
+    <div class="grid-list-mobile">
+      <label class="card-label">created_at:</label>
+      <div class="label-discription">{{row.created_at | date:'dd/MM/yyyy'}}</div>
+    </div>
+    <div class="grid-list-mobile">
+      <label class="card-label">updated_at:</label>
+      <div class="label-discription">{{row.updated_at | date:'dd/MM/yyyy'}}</div>
+    </div>
+    <div class="grid-list-mobile">
+      <label class="card-label">order_status:</label>
+      <div class="label-discription">{{row.order_status_text}}</div>
+    </div>
+    <div class="grid-list-mobile">
+      <label class="card-label">purchased_from:</label>
+      <div class="label-discription">{{row.purchased_from}}</div>
+    </div>
+    <div class="grid-list-mobile">
+      <label class="card-label">store_code:</label>
+      <div class="label-discription">{{row.store_code}}</div>
+    </div>
+    <div class="grid-list-mobile">
+      <label class="card-label">total_items:</label>
+      <div class="label-discription">{{row.total_items}}</div>
+    </div>
+
+  </mat-card>
+</div>

@@ -1,0 +1,28 @@
+<div class="row graph-grid-row">
+  <div class="col-lg-6 col-md-6 col-xl-4 col-12 graph-grid">
+    <mat-card class="pieChart">
+      <h3 class="chart-title">Gender Breakup (%)</h3>
+      <ngx-charts-advanced-pie-chart [scheme]="colorScheme" [view]="viewPie" [results]="gender_details"
+        [label]="'Gender'">
+      </ngx-charts-advanced-pie-chart>
+    </mat-card>
+  </div>
+
+  <div class="col-lg-6 col-md-6 col-xl-4 col-12 graph-grid">
+    <mat-card class="pieChart">
+      <h3 class="chart-title">Members - Active/Inactive (%)</h3>
+      <ngx-charts-advanced-pie-chart [scheme]="memberColorScheme" [view]="viewPie" [results]="user_status"
+        [label]="'Active/Inactive'">
+      </ngx-charts-advanced-pie-chart>
+    </mat-card>
+  </div>
+
+  <div class="col-lg-6 col-md-6 col-xl-4 col-12 graph-grid">
+    <mat-card class="pieChart">
+      <h3 class="chart-title">Transactional Activity of Members</h3>
+      <ngx-charts-advanced-pie-chart [scheme]="memberColorScheme" [view]="viewPie" [results]="status_details_new"
+        [label]="'Active/Dormant'">
+      </ngx-charts-advanced-pie-chart>
+    </mat-card>
+  </div>
+</div>

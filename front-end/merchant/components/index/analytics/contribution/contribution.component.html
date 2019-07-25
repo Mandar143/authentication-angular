@@ -1,0 +1,36 @@
+<div class="row graph-grid-row">
+  <div class="col-lg-12 col-md-12 col-xl-12 col-12 graph-grid">
+    <mat-card class="mat-card">
+      <h3 class="chart-title">Contribution to Crocs Club</h3>
+      <div [@.disabled]="true">
+        <!-- (selectedTabChange)="tabChange($event)" (selectedIndexChange)="selectedIndex($event)" dynamicHeight -->
+        <mat-tab-group (focusChange)="focusChange($event)">
+          <mat-tab label="Sales">
+            <mat-button-toggle-group #contribution_store_sales="matButtonToggleGroup" (change)="subFilter($event)"
+              value="count">
+              <mat-button-toggle value="count"> Count </mat-button-toggle>
+              <mat-button-toggle *ngIf="userType == 4" value="value"> Value </mat-button-toggle>
+              <mat-button-toggle *ngIf="userType == 5" value="percentage"> Percentage </mat-button-toggle>
+            </mat-button-toggle-group>
+            <ngx-charts-bar-vertical *ngIf="store_sales.length" [scheme]="colorScheme" [view]="chart_size" [results]="store_sales" [xAxis]="true"
+              [yAxis]="true" [yAxisLabel]="'Number of members'" [barPadding]="20">
+            </ngx-charts-bar-vertical>
+            <div class="text-center mt-3 mb-3" *ngIf="!store_sales.length"> <b>No records found </b> </div>
+          </mat-tab>
+          <mat-tab label="Registrations">
+            <mat-button-toggle-group #contribution_store_registered_customers="matButtonToggleGroup"
+              (change)="subFilter($event)" value="count">
+              <mat-button-toggle value="count"> Count </mat-button-toggle>
+              <mat-button-toggle *ngIf="userType == 5" value="percentage"> Percentage </mat-button-toggle>
+            </mat-button-toggle-group>
+            <ngx-charts-bar-vertical *ngIf="store_registered_customers.length" [scheme]="colorScheme" [view]="chart_size" [results]="store_registered_customers"
+              [xAxis]="true" [yAxis]="true" [showXAxisLabel]="true" [yAxisLabel]="'Value of rewards redeemed'"
+              [barPadding]="20">
+            </ngx-charts-bar-vertical>
+            <div class="text-center mt-3 mb-3" *ngIf="!store_registered_customers.length"> <b>No records found </b> </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </mat-card>
+  </div>
+</div>

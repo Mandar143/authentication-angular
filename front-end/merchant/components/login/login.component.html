@@ -1,0 +1,69 @@
+<div class="login-container">
+  <div class="login-inner-container">
+    <div class="login-page text-center">
+      <div routerLink="/" class="mb-3 cursor-over">
+        <img src="assets/images/logo_2.png" width="110px" height="20px" alt="Logo">
+      </div>
+      <div class="card card-block login-card">
+        <h3 class="login-title">Login to your account</h3>
+
+        <form [formGroup]="loginForm" autocomplete="off" >
+          <div class="form-field-container">
+            <mat-form-field appearance="outline">
+              <mat-label>Username</mat-label>
+              <mat-icon matPrefix class="material-icons mat-icon-login">account_circle</mat-icon>
+              <input matInput placeholder="Enter Username" autofocus autocomplete="off" type="text"
+                formControlName="username" maxlength="15" autoFocus>
+              <!-- <mat-icon *ngIf="mobile.disabled" matSuffix class="material-icons mat-icon-login"
+                      matTooltip="Change mobile number">edit</mat-icon> -->
+              <mat-error *ngIf="loginForm.get('username').hasError('required')">
+                Username can not be blank.
+              </mat-error>
+              <mat-error *ngIf="loginForm.get('username').hasError('pattern')">
+                Enter a valid username
+              </mat-error>
+              <mat-error *ngIf="loginForm.get('username').hasError('minlength')">
+                Username minimum 5 characters.
+              </mat-error>
+              <!-- <mat-error *ngIf="loginForm.get('username').hasError('maxlength')">
+                Username maximum 15 characters.
+              </mat-error> -->
+              <mat-error *ngIf="loginForm.get('username').hasError('serverError')">
+                {{ loginForm.get('username').errors?.message }}
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Password</mat-label>
+              <mat-icon matPrefix class="material-icons mat-icon-login">lock</mat-icon>
+              <input matInput placeholder="Enter Password" autocomplete="off" [type]="hide ? 'password' : 'text'"
+                formControlName="password" maxlength="50">
+              <mat-icon matSuffix class="mat-icon-login" (click)="hide = !hide">
+                {{ hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              <mat-error *ngIf="loginForm.get('password').hasError('required')">
+                Password can not be blank.
+              </mat-error>
+              <mat-error *ngIf="loginForm.get('password').hasError('pattern')">
+                Password contains at least one digit, small letter, capital letter and special character.
+              </mat-error>
+              <mat-error *ngIf="loginForm.get('password').hasError('minlength')">
+                Password minimum 8 character length.
+              </mat-error>
+              <!-- <mat-error *ngIf="loginForm.get('password').hasError('maxlength')">
+                Password maximum 20 character length.
+              </mat-error> -->
+              <mat-error *ngIf="loginForm.get('password').hasError('serverError')">
+                {{ loginForm.get('password').errors?.message }}
+              </mat-error>
+            </mat-form-field>
+            <div class="login-btn mt-3">
+              <button mat-raised-button type="submit" class="login-tab mat-btn-theme" [disabled]="!loginForm.valid"
+                (click)="requestLogin()">Login</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <p class="copyright-text text-center">Powered By &copy; Boomer 2019.</p>
+  </div>
+</div>

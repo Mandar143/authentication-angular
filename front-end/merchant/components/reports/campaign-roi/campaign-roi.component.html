@@ -1,0 +1,137 @@
+<mat-card class="mat-card mt-2">
+    <h3 class="card-title">
+        Campaign ROI
+        <button mat-raised-button class="mat-btn-theme pull-right" (click)="togglePanelSearch()">Search By</button>
+    </h3>
+    <!-- <div class="search-btn-container">
+        <button mat-raised-button class="mat-btn-theme" (click)="togglePanelSearch()">Search By</button>
+    </div> -->
+
+    <div *ngIf="panelStateSearch">
+        <mat-card class="mat-card mt-1 mb-5">
+            <span class="close-icon" (click)="togglePanelSearch()"></span>
+            <app-filter-logs [formControls]="formControls" (submited)="onSubmit($event)"></app-filter-logs>
+        </mat-card>
+    </div>
+    <!-- <mat-accordion class="example-headers-align">
+        <mat-expansion-panel [expanded]="panelStateSearch">
+            <span class="close-icon" (click)="togglePanelSearch()"></span>
+            <form [formGroup]="campaignROIForm">
+                <div class="example-container row">
+
+                    <div class="col-lg-6 col-xl-6 col-md-6 col-12">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Start Date</mat-label>
+                            <input matInput [max]="maxDate" [matDatepicker]="starDate" autocomplete="off"
+                                placeholder="Start Date" formControlName="start_date" (focus)="starDate?.open()" readonly>
+                            <mat-datepicker-toggle matSuffix [for]="starDate"></mat-datepicker-toggle>
+                            <mat-datepicker #starDate></mat-datepicker>
+
+                            <mat-error *ngIf="campaignROIForm.get('start_date').hasError('required')">
+                                This field is required.
+                            </mat-error>
+                            <mat-error *ngIf="campaignROIForm.get('start_date').errors?.serverError">
+                                {{ campaignROIForm.get('start_date').errors?.message }}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-lg-6 col-xl-6 col-md-6 col-12">
+                        <mat-form-field appearance="outline">
+                            <mat-label>End Date</mat-label>
+                            <input matInput [max]="maxDate" [matDatepicker]="endDate" autocomplete="off"
+                                placeholder="End Date" formControlName="end_date" (focus)="endDate?.open()" readonly>
+                            <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+                            <mat-datepicker #endDate></mat-datepicker>
+
+                            <mat-error *ngIf="campaignROIForm.get('end_date').hasError('required')">
+                                This field is required.
+                            </mat-error>
+                            <mat-error *ngIf="campaignROIForm.get('end_date').errors?.serverError">
+                                {{ campaignROIForm.get('end_date').errors?.message }}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                </div>
+                <div class="text-center">
+                    <button mat-raised-button class="mat-btn-theme submitBtn" style="margin-right: 10px;"
+                        (click)="filter()">Search</button>
+                    <button mat-raised-button class="mat-btn-theme submitBtn" (click)="filterReset()">Clear</button>
+                </div>
+            </form>
+        </mat-expansion-panel>
+    </mat-accordion> -->
+
+    <ng-container>
+        <mat-card-content class="example-card">
+            <mat-table [dataSource]="dataSource" matSort matSortDirection="desc" matSortDisableClear
+                class="lmat-elevation-z8 mat-table-section dashboard-table mt-3 desktop-view-table">
+                <ng-container matColumnDef="campaign_title">
+                    <mat-header-cell class="header cell-1" *matHeaderCellDef>Campaign Title</mat-header-cell>
+                    <mat-cell class="cell cell-2" *matCellDef="let element">{{element.campaign_title}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="contacted_customers">
+                    <mat-header-cell class="header cell-1" *matHeaderCellDef>Contacted Customers</mat-header-cell>
+                    <mat-cell class="cell cell-2" *matCellDef="let element">{{element.contacted_customers}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="responding_customers">
+                    <mat-header-cell class="header cell-1" *matHeaderCellDef>Responding Customers</mat-header-cell>
+                    <mat-cell class="cell cell-2" *matCellDef="let element">{{element.responding_customers}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="responder_sales">
+                    <mat-header-cell class="header cell-1" *matHeaderCellDef>Responder Sales</mat-header-cell>
+                    <mat-cell class="cell cell-2" *matCellDef="let element">{{element.responder_sales}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="hit_rate">
+                    <mat-header-cell class="header cell-1" *matHeaderCellDef>Hit Rate</mat-header-cell>
+                    <mat-cell class="cell cell-2" *matCellDef="let element">{{element.hit_rate}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="responder_abv">
+                    <mat-header-cell class="header cell-1" *matHeaderCellDef>Responder ABV</mat-header-cell>
+                    <mat-cell class="cell cell-2" *matCellDef="let element">{{element.responder_abv}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="responder_txns">
+                    <mat-header-cell class="header cell-1" *matHeaderCellDef>Responder Txns</mat-header-cell>
+                    <mat-cell class="cell cell-2" *matCellDef="let element">{{element.responder_txns}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="responder_atv">
+                    <mat-header-cell class="header cell-1" *matHeaderCellDef>Responder ATV</mat-header-cell>
+                    <mat-cell class="cell cell-2" *matCellDef="let element">{{element.responder_atv}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="coupon_issued">
+                    <mat-header-cell class="header cell-1" *matHeaderCellDef>Coupon Issued</mat-header-cell>
+                    <mat-cell class="cell cell-2" *matCellDef="let element">{{element.coupon_issued}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="coupon_redeemed">
+                    <mat-header-cell class="header cell-1" *matHeaderCellDef>Coupon Redeemed</mat-header-cell>
+                    <mat-cell class="cell cell-2" *matCellDef="let element">{{element.coupon_redeemed}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="redemption_revenue">
+                    <mat-header-cell class="header cell-1" *matHeaderCellDef>Redemption Revenue</mat-header-cell>
+                    <mat-cell class="cell cell-2" *matCellDef="let element">{{element.redemption_revenue}}</mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+
+            <div class="mat-table__message text-center mt-3 mb-3" *ngIf="!dataSource.hasItems">No records found</div>
+            <div class="mat-table__bottom">
+                <mat-spinner [diameter]="30" *ngIf="dataSource.loading$ | async" class="loader"></mat-spinner>
+                <mat-paginator [pageSize]="10" [pageIndex]="0" [length]="dataSource.paginatorTotal$ | async"
+                    [showFirstLastButtons]="true"></mat-paginator>
+            </div>
+        </mat-card-content>
+    </ng-container>
+</mat-card>

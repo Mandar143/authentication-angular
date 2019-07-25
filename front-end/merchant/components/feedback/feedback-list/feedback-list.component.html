@@ -1,0 +1,77 @@
+<mat-card class="mat-card mt-2">
+  <h3 class="card-title">
+    Customer Feedback
+    <button mat-raised-button class="mat-btn-theme pull-right" (click)="togglePanelSearch()">Search By</button>
+  </h3>
+
+  <div *ngIf="panelStateSearch">
+    <mat-card class="mat-card mt-1 mb-5">
+      <span class="close-icon" (click)="togglePanelSearch()"></span>
+      <app-filter-logs [formControls]="formControls" (submited)="onSubmit($event)"></app-filter-logs>
+    </mat-card>
+  </div>
+
+  <div class="row summary-row">
+    <div class="col-lg-6 col-md-6 col-xl-6 col-12 ">
+      <label><span class="summary-label">Total Count:</span> <span matTooltip="{{totalCount}}"> {{totalCount | abbrevateNumber}} </span></label>
+    </div>
+    <div class="col-lg-6 col-md-6 col-xl-6 col-12 ">
+      <label><span class="summary-label">Total Customer:</span> <span matTooltip="{{totalCustomer}}"> {{totalCustomer | abbrevateNumber}} </span></label>
+    </div>
+  </div>
+
+  <ng-container>
+    <mat-card-content class="example-card">
+
+      <mat-table [dataSource]="dataSource" matSort matSortActive="created_at" matSortDirection="desc" matSortDisableClear
+        class="lmat-elevation-z8 mat-table-section dashboard-table mt-3 desktop-view-table">
+
+        <ng-container matColumnDef="customer_name">
+          <mat-header-cell class="header cell-1" *matHeaderCellDef mat-sort-header> Customer Name </mat-header-cell>
+          <mat-cell class="cell cell-2" *matCellDef="let element"> {{element.customer_name || '-'}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="mobile_number">
+          <mat-header-cell class="header cell-1" *matHeaderCellDef> Mobile Number </mat-header-cell>
+          <mat-cell class="cell cell-2" *matCellDef="let element"> {{element.mobile_number}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="subject">
+          <mat-header-cell class="header cell-1" *matHeaderCellDef> Subject
+          </mat-header-cell>
+          <mat-cell class="cell cell-2" *matCellDef="let element">
+            <span class="overflow-text-ellipsis" matTooltip="{{element.subject}}">{{element.subject | unescapeData}}</span>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="created_at">
+          <mat-header-cell class="header cell-1" *matHeaderCellDef mat-sort-header> Date </mat-header-cell>
+          <mat-cell class="cell cell-2" *matCellDef="let element"> {{element.created_at | date: dateFormate}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="view">
+          <mat-header-cell class="header cell-1" *matHeaderCellDef> View </mat-header-cell>
+          <mat-cell class="cell cell-2" *matCellDef="let element">
+            <button style="flex-shrink:unset;" mat-icon-button matTooltip="View"
+              (click)="view(element)">
+              <mat-icon color="primary">remove_red_eye</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+
+      <div class="mat-table__message text-center mt-3 mb-3" *ngIf="!dataSource.hasItems">No records found</div>
+      <div class="mat-table__bottom">
+        <mat-spinner [diameter]="30" *ngIf="dataSource.loading$ | async" class="loader"></mat-spinner>
+        <mat-paginator [pageSize]="10" [pageIndex]="0" [length]="dataSource.paginatorTotal$ | async"
+          [showFirstLastButtons]="true"></mat-paginator>
+      </div>
+
+    </mat-card-content>
+  </ng-container>
+
+</mat-card>
